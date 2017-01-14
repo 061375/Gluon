@@ -1,14 +1,12 @@
-all:
-  doctrine:
-    # Allowance for other database abstractions 
-    class:        Database 
-    param:
-      dsn:        mysql:dbname=database;host=localhost
-      username: root
-      password: password
-      # You need these for non-latin character sets and full I18N
-      encoding: utf8
-      attributes:
-        DEFAULT_TABLE_TYPE: INNODB
-        DEFAULT_TABLE_CHARSET: utf8
-        DEFAULT_TABLE_COLLATE: utf8_general_ci
+# Allowance for other database abstractions 
+class:        gl_pdoDatabase 
+param:
+  dsn:        mysql:dbname=database;host=localhost
+  username: root
+  password: password
+  # You need these for non-latin character sets and full I18N
+  encoding: utf8
+  attributes:
+    DEFAULT_TABLE_TYPE: INNODB
+    DEFAULT_TABLE_CHARSET: utf8
+    DEFAULT_TABLE_COLLATE: utf8_general_ci
