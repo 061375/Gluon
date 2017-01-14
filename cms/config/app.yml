@@ -1,0 +1,4 @@
+all:
+    # by default Gluon follows PSR-4 folder suggestions
+    # but you can specify another folder to attempt to autoload your own code
+    src:
