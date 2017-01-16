@@ -8,7 +8,7 @@ class gl_General
             parse_str(($_SERVER['QUERY_STRING'] ? $_SERVER['QUERY_STRING'] : ''), $_GET);
             define("GET_STRING",true);
         }
-		$GET = gl_General::cleanSuperGlobal($_GET,'clean_get');
+		$GET = self::cleanSuperGlobal($_GET,'clean_get');
         return isset($GET[$key]) ? $GET[$key] : $else;
     }
 	/**
@@ -20,7 +20,7 @@ class gl_General
 		    $elem = htmlentities($elem,ENT_QUOTES,"UTF-8"); 
 	    else 
 		    foreach ($elem as $key => $value) 
-			    $elem[$key] =gl_General::cleanSuperGlobal($value); 
+			    $elem[$key] =self::cleanSuperGlobal($value); 
 	    return $elem; 
     } 
     /**
@@ -28,7 +28,7 @@ class gl_General
      *  */
     public static function post_variable($key,$else='',$bool=false,$die=false,$redirect='',$message='')
     {
-		$POST = gl_General::cleanSuperGlobal($_POST,'clean_post');
+		$POST = self::cleanSuperGlobal($_POST,'clean_post');
         if($bool == false){
             $return = isset($POST[$key]) ? $POST[$key] : $else;
         }else{
@@ -42,7 +42,7 @@ class gl_General
 				if($redirect == ''){
 					die($message);
 				}else{
-					gl_General::Location($redirect);
+					self::Location($redirect);
 				}
             }
         }
@@ -53,10 +53,10 @@ class gl_General
      *  */
     public static function get_query($var,$else='')
     {
-        $return = gl_General::get_variable($var,'');
+        $return = self::get_variable($var,'');
         if($return == '')
         {
-            return gl_General::post_variable($var,$else);
+            return self::post_variable($var,$else);
         }
         return $return;
     }
@@ -64,7 +64,7 @@ class gl_General
      *
      *  */
 	public static function get_request($key,$else=''){
-		$REQUEST = gl_General::cleanSuperGlobal($_REQUEST,'clean_request');
+		$REQUEST = self::cleanSuperGlobal($_REQUEST,'clean_request');
         return isset($REQUEST[$key]) ? $REQUEST[$key] : $else;
     }
     /**
@@ -76,8 +76,8 @@ class gl_General
     /**
      *
      *  */
-    public static function is_set($variable,$else = ''){
-        return isset($variable) ? $variable : $else;
+    public static function is_set($array,$key,$default=''){
+        return isset($array[$key]) ? $array[$key] : $default;
     }
     /**
      *
@@ -157,7 +157,7 @@ class gl_General
         $arrObj = is_object($obj) ? get_object_vars($obj) : $obj;
         $arr = array();
         foreach ($arrObj as $key => $val) {
-                $val = (is_array($val) || is_object($val)) ? gl_General::simpleObjectToArray($val) : $val;
+                $val = (is_array($val) || is_object($val)) ? self::simpleObjectToArray($val) : $val;
                 $arr[$key] = $val;
         }
         return $arr;

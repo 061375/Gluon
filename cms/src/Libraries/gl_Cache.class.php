@@ -36,9 +36,10 @@ class gl_Cache
      * @param string $dir
      * @param string $ext 
      * */
-    public function recurse_get_files($dir,$ext = '.php')
+    public function recurse_get_files($dir,$ext = '.php',$return = false)
     {
-        $return = array();
+        if(false === $return)
+            $return = array();
         $Directory = new \RecursiveDirectoryIterator($dir);
         $Iterator = new \RecursiveIteratorIterator($Directory);
         $objects = new \RegexIterator($Iterator, '/^.+\\'.$ext.'$/i', \RecursiveRegexIterator::GET_MATCH);
@@ -76,17 +77,28 @@ class gl_Cache
         $v = $v->version;
         $yml = array();
         $ymls = $this->recurse_get_files(getcwd().'/themes','.info.yml');
+        $ymls = $this->recurse_get_files(getcwd().'/src/View/','.info.yml',$ymls);
         foreach($ymls as $f) {
             $name = str_replace('.info.yml','',basename($f));
-            $yml[$name]['path'] = $f;
             $app = @yaml_parse_file($f);
+            $tname = \Libraries\gl_General::is_set($app,'name',false);
+            if(false === $tname) {
+                print "\nGluon Notice: Theme ".$name." [name] not set\nTheme skipped\n";
+                continue;
+            }
+            $type = \Libraries\gl_General::is_set($app,'type',false);
+            if(false === $type) {
+                print "\nGluon Notice: Theme ".$app['name']." [type] not set\nTheme skipped\n";
+                continue;
+            }
+            $yml[$type][$name]['path'] = $f;
             $cv = str_replace(substr($v,strpos($v,'.'),strlen($v)),'',$v);
             $tcv = str_replace('.x','',$app['core']);
             if($cv > $tcv){
-                unset($yml[$name]);
+                unset($yml[$type][$name]);
                 print "\nGluon Notice: Theme ".$app['name']." version:".$tcv." not compatible with current version: ".$cv."\nTheme skipped\n";
             }else{
-                $yml[$name]['info'] = $app;
+                $yml[$type][$name]['info'] = $app;
             }
         }
         if(false === $this->add_config($yml,'cache/themes.yml.php'))
@@ -102,7 +114,7 @@ class gl_Cache
      * */
     public function add_config($src,$path) {
         $error[] = @file_put_contents($path,$this->header);
-        $error[] = @file_put_contents($path,'return array(',FILE_APPEND);
+        $error[] = @file_put_contents($path,'$return = array(',FILE_APPEND);
         $out = $this->recurse_built_array($src);
         $error[] = @file_put_contents($path,$out,FILE_APPEND);
         $this->add_tail($path);
@@ -125,6 +137,113 @@ class gl_Cache
             return false;
         }
         return true;
+    }
+    /**
+     * operation to build themes (both admin or custom)
+     * @return bool
+     * */
+    public function build_themes()
+    {
+        $error = array();
+        $theme_yml = self::get_cache_byfile('themes.yml.php');
+        $debugmode = self::get_cache_byfile('app.yml.php');
+        $debugmode = \Libraries\gl_General::is_set($debugmode,'debugmode',false);
+        if(true == $debugmode)$debugmode = true;
+        $now = date('dis',strtotime('now'));
+        $return = array();
+        $build = array();
+        // loop all themes
+        foreach($theme_yml as $type => $themes) {
+            $build = array('js'=>'','css'=>'');
+            foreach($themes as $tname => $theme) {
+                // get path for current theme
+                $current = str_replace(basename($theme['path']),'',$theme['path']);
+        
+                // get js scripts
+                // if overide is set
+                if(isset($theme['info']['overide']) AND trim($theme['info']['overide']) != '') {
+                    $path = $current.$theme['overide']['js'];
+                    if(true === $debugmode)
+                        $path = $current.$theme['info']['overide']['js_working'];   
+                }else{
+                    $path = $current.'_/js';
+                    if(true === $debugmode)
+                        $path = $current.'_/components/js';
+                }
+                $js = self::recurse_get_files($path,'.js');
+                // get stylsheets
+                $path = $current.'_/css';
+                $css = self::recurse_get_files($path,'.css');
+    
+                if(true === $debugmode) {
+                    // gather and build scripts
+                    $build['js'] .= "<!-- ".$theme['info']['name']."-->\n";
+                    foreach($js as $j) {
+                        $build['js'] .= '<script src="'.str_replace(getcwd(),'',$j).'?c='.$now.'"></script>'."\n";
+                    }
+                    // gather and build css
+                    $build['css'] .= "<!-- ".$theme['info']['name']."-->\n";
+                    foreach($css as $c) {
+                        $build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd(),'',$c).'?c='.$now.'"/>'."\n";
+                    }
+                }else{
+                    // gather ,minify, then build scripts
+                    $scr = '';
+                    foreach($js as $j) {
+                        $chk = file_get_contents($j);
+                        if(false === $chk){
+                            $error[] = true;
+                        }else{
+                            $scr.=$chk;
+                        }
+                    }
+                    file_put_contents($current.'_/js/script.js',$scr);
+                    $build['js'] = '<script src="'.str_replace(getcwd(),'',$current).'_/js/script.js'.'?c='.$now.'"></script>'."\n";
+                    // gather ,minify, then build css
+                    $scr = '';
+                    foreach($css as $c) {
+                        $chk = file_get_contents($c);
+                        if(false === $chk){
+                            $error[] = true;
+                        }else{
+                            $scr.=$chk;
+                        }
+                    }
+                    file_put_contents($current.'_/js/style.css',$scr);
+                    $build['css'] = '<link rel="stylesheet" href="'.str_replace(getcwd(),'',$current).'_/css/style.css'.'?c='.$now.'"/>'."\n";
+                }
+                // render theme HTML file files
+                $html = self::recurse_get_files($current,'.html.php');
+                foreach($html as $path) {
+                    $rendered = $this->renderPhpToString($path,array('build'=>$build));
+                    if(false === $debugmode) {
+                        $rendered = $this->compress($rendered);
+                    }
+                    $return[$type][$tname] = $rendered;
+                }
+            }
+        }
+        // check if errors
+        if(in_array(false,$error)){
+            $this->errors->set_error_message(__METHOD__.' error creating cache');
+            return false;
+        }
+        print "\n";print_r($return );exit();/*REMOVE ME*/
+        return $return;
+    }
+    
+    
+    // ---------------------------------- Public Static Functions
+    
+    /**
+     * gets a cached file and returns its value
+     * @param string the file name ex: app.yml.php
+     * @return array
+     * */
+    public static function get_cache_byfile($file)
+    {
+        include('cache/'.$file);
+        return $return;
     }
     
     
@@ -150,5 +269,33 @@ class gl_Cache
                 }
         }
         return $out;
+    }
+    /**
+     * strip whitespace from php files
+     * @param string $in
+     * @return string
+     * */
+    private function compress($in)
+    {
+        $out = str_replace("\n",'',$in);
+        $out = str_replace("\t",'',$out);
+        $out = str_replace("\r",'',$out);
+        $out = preg_replace('!\s+!', ' ', $out);
+        $out = preg_replace('/<!--(.*)-->/Uis', '', $out);
+        return $out;
+    }
+    /**
+     * rander php to variable for compression
+     * @param string {}
+     * @return string
+     * */
+    private function renderPhpToString( )
+    {
+        if( is_array( func_get_arg(1) ) ) {
+            extract( func_get_arg(1) );
+        }
+        ob_start();
+        require func_get_arg( 0 );
+        return ob_get_clean();
     }
 }

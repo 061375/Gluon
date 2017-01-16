@@ -1,0 +1,5 @@
+name: Admin
+description: The admin theme
+author: Jeremy Heminger
+core: 1.x
+type: admintheme

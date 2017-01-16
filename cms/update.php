@@ -11,7 +11,25 @@ up - update to the latest version
 switch($task)
 {
     case 'cc':
-        
+        gluon_clear_cache();
+        break;
+    case 'up':
+        break;
+    default:
+        if (php_sapi_name() !== 'cli') {
+            $err = json_encode(array(
+                'success'=>false,
+                'message'=>'Requested task unrecognized'
+            ));
+        }else{
+            $err = "\nError: task not recognized.\n";
+            $err .= $help;
+        }
+        die($err);
+}
+
+function gluon_clear_cache() {
+            
         // init vars
         $classes_path = 'cache/classes.yml.php';
         
@@ -24,6 +42,7 @@ switch($task)
         // init classes
         require_once('src/Libraries/gl_Cache.class.php');
         require_once('src/Libraries/gl_ErrorHandler.class.php');
+        require_once('src/Libraries/gl_General.class.php');
         $error = new \Libraries\gl_ErrorHandler;
         $cache = new \Libraries\gl_Cache($error);
         
@@ -70,24 +89,13 @@ switch($task)
                 $error->display_errors(true,true);
         /******   ./DATABASE YML   ******/
         
-        /******   THEMES YML   ******/
+        /******   GATHER THEMES YML   ******/
             if(false === $cache->themes())
                 $error->display_errors(true,true);    
-        /******   ./THEMES YML   ******/
+        /******   ./GATHER THEMES YML   ******/
         
-        
-        break;
-    case 'up':
-        break;
-    default:
-        if (php_sapi_name() !== 'cli') {
-            $err = json_encode(array(
-                'success'=>false,
-                'message'=>'Requested task unrecognized'
-            ));
-        }else{
-            $err = "\nError: task not recognized.\n";
-            $err .= $help;
-        }
-        die($err);
+        /******   BUILD THEMES   ******/
+            if(false === $cache->build_themes())
+                $error->display_errors(true,true);   
+        /******   ./BUILD THEMES   ******/
 }

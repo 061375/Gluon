@@ -2,3 +2,9 @@ name: Default
 description: The basic theme
 author: Jeremy Heminger
 core: 1.x
+type: theme
+# if path to js, css or other scripts is necessary, ad them in the overide directive
+# overide:
+#   js: path/to/scripts
+#   js_working: path/to/non-minified/scripts
+#   css: path/to/css
