@@ -1,0 +1,3 @@
+<Files ~ "^\.(htaccess|htpasswd|database|loginhash)$">
+deny from all
+</Files>
