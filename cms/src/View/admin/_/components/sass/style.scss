@@ -1,3 +1,8 @@
 //
 @import "reset";
-@import "mixins"; 
+@import "mixins";
+@import "install";
+
+body {
+     font-family: Helvetica;
+}

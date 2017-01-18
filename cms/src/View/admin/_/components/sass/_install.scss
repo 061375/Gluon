@@ -1,0 +1,39 @@
+.container {
+    width: 100vw;
+    max-width: 320px;
+    position: relative;
+    margin: 20vh auto;
+    perspective: 1000px;
+}
+.box {
+    transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
+    width: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    animation: mymove .5s normal forwards ease-in-out;
+    padding: 10px;
+    text-align: center;
+    border: solid 1px #d8d8d8;
+    border-radius: 5px;
+    transform: rotateX(30deg);
+    &.install {
+        transform: rotateX(0deg);    
+    }
+    img {
+        width: 100%;
+    }
+    button {
+        background: rgb(255,255,255); /* Old browsers */
+        background: -moz-linear-gradient(top,  rgba(255,255,255,1) 51%, rgba(198,198,198,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
+        border-radius: 5px;
+        border: solid 1px #d8d8d8;
+        cursor: pointer;
+    }
+}
+@include keyframes(flyin) {
+    from {top: 0px;opacity: 0;box-shadow: 0px 1px 5px #7d7d7d;}
+    to {top: -50px;opacity: 1;box-shadow: 0px 100px 100px #7d7d7d;}
+}
