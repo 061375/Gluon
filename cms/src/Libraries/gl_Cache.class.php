@@ -197,8 +197,8 @@ class gl_Cache
                             $scr.=$chk;
                         }
                     }
-                    file_put_contents($current.'_/js/script.js',$scr);
-                    $build['js'] = '<script src="'.str_replace(getcwd(),'',$current).'_/js/script.js'.'?c='.$now.'"></script>'."\n";
+                    file_put_contents($current.'../../../upload/_/js/script.js',$scr);
+                    $build['js'] = '<script src="/_/js/script.js'.'?c='.$now.'"></script>'."\n";
                     // gather ,minify, then build css
                     $scr = '';
                     foreach($css as $c) {
@@ -209,8 +209,8 @@ class gl_Cache
                             $scr.=$chk;
                         }
                     }
-                    file_put_contents($current.'_/js/style.css',$scr);
-                    $build['css'] = '<link rel="stylesheet" href="'.str_replace(getcwd(),'',$current).'_/css/style.css'.'?c='.$now.'"/>'."\n";
+                    file_put_contents($current.'../../../upload/_/js/style.css',$scr);
+                    $build['css'] = '<link rel="stylesheet" href="/_/css/style.css'.'?c='.$now.'"/>'."\n";
                 }
                 // render theme HTML file files
                 $html = self::recurse_get_files($current,'.html.php');
@@ -228,7 +228,6 @@ class gl_Cache
             $this->errors->set_error_message(__METHOD__.' error creating cache');
             return false;
         }
-        print "\n";print_r($return );exit();/*REMOVE ME*/
         return $return;
     }
     

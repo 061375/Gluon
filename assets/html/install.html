@@ -8,11 +8,17 @@
             font-family: Helvetica;
         }
         .container {
+            transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
             width: 100vw;
             max-width: 320px;
             position: relative;
             margin: 20vh auto;
             perspective: 1000px;
+            opacity: 1;
+        }
+        .container.fadeout {
+            max-width: 100vw;
+            opacity: 0;
         }
         .box {
             transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
@@ -39,19 +45,86 @@
             border: solid 1px #d8d8d8;
             cursor: pointer;
         }
-        .box.install {
-            transform: rotateX(0deg);  
+        .box.start {
+            transform: rotateX(0deg);
+            box-shadow: 0px 0px 50px #7d7d7d;
+        }
+        .box.startb {
+            transform: rotateY(360deg);
+        }
+        .box input {
+            width: 100%;
+            margin: 0 0 5px 0;
+        }
+        .stepone {
+            display: block;
+        }
+        .steptwo {
+            text-align: right;
+            display: none;
+        }
+        .stepthree {
+            text-align: right;
+            display: none;
+        }
+        .running {
+            display: none;
+            text-align: center;
+        }
+        .prev-step {
+            float: left;
+        }
+        .port {
+            width: 60px !important;
         }
         @keyframes mymove {
             from {top: 0px;opacity: 0;box-shadow: 0px 1px 5px #7d7d7d;}
             to {top: -50px;opacity: 1;box-shadow: 0px 100px 100px #7d7d7d;}
         }
+        .spinup {
+            animation: spinup 3s infinite linear;
+        }
+        @keyframes spinup {
+            0%{transform:rotate(0deg)}
+            100%{transform:rotate(360deg)}
+        }
     </style>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('button').on('click',function(){
-                $('.box').addClass('install');
+            $('.startb').on('click',function(){
+                $('.box').addClass('start');
+                setTimeout(function(){
+                    $('.box').addClass('startb');
+                    setTimeout(function(){
+                        $('.stepone').css('display','none');
+                        $('.steptwo').css('display','block');
+                    },100);
+                },1000);
+            });
+            $('.step-two').on('click',function(){
+                $('.box').removeClass('startb');
+                setTimeout(function(){
+                    $('.steptwo').css('display','none');
+                    $('.stepthree').css('display','block');
+                },100);
+            });
+            $('.prev-step').on('click',function(){
+                $('.box').addClass('startb');
+                setTimeout(function(){
+                    $('.stepthree').css('display','none');
+                    $('.steptwo').css('display','block');
+                },100);
+            });
+            $('.run-install').on('click',function(){
+                $('.stepthree').fadeOut("fast",function(){
+                    $('.running').fadeIn("fast",function(){
+                        $('.logo').addClass("spinup");
+                        setTimeout(function(){
+                            $('.container').addClass('fadeout');
+                        },5000);
+                    });
+                })
             });
         });
     </script>
@@ -60,13 +133,77 @@
 <body>
     <div class="container">
         <div class="box">
-            <img src="logo.svg" />
-            <h1>
-                Welcome!
-            </h1>
-            to the
-            <h2>Gluon Content Management System</h2>
-            <button class="install">Install</button>
+            <img src="../svg/logo.svg" class="logo" />
+            <div class="stepone">
+                <h1>
+                    Welcome!
+                </h1>
+                to the
+                <h2>Gluon Content Management System</h2>
+                <button class="startb">Get Started</button>
+            </div>
+            <div class="steptwo">
+                <h2>
+                    Database Connection
+                </h2>
+                <label for="host">
+                    Host<br />
+                    <input type="text" class="host" />
+                </label>
+                <br />
+                <label for="dbname">
+                    DB Name<br />
+                    <input type="text" class="dbname" />
+                </label>
+                <br />
+                <label for="username">
+                    User Name<br />
+                    <input type="text" class="username" />
+                </label>
+                <br />
+                <label for="password">
+                    Password<br />
+                    <input type="password" class="password" />
+                </label>
+                <br />
+                <button class="step-two">Next Step --></button>
+            </div>
+            <div class="stepthree">
+                <h2>
+                    FTP Connection
+                </h2>
+                <label for="host">
+                    Host<br />
+                    <input type="text" class="host" />
+                </label>
+                <br />
+                <label for="protocol">
+                    Protocol<br />
+                    <input type="text" class="port" placeholder="port" />
+                    <select class="protocol">
+                        <option value="ftp">FTP - File Transfer Protocol</option>
+                        <option value="sftp">SFTP - SSH File Transfer Protocol</option>
+                    </select>
+                </label>
+                <br />
+                <label for="username">
+                    User Name<br />
+                    <input type="text" class="username" />
+                </label>
+                <br />
+                <label for="password">
+                    Password<br />
+                    <input type="password" class="password" />
+                </label>
+                <br />
+                <button class="prev-step"><-- Prev Step</button>
+                <button class="run-install">Install</button>
+            </div>
+            <div class="running">
+                <h2>
+                    Please wait...
+                </h2>
+            </div>
         </div>
     </div>
 </body>

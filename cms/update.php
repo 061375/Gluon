@@ -48,6 +48,7 @@ function gluon_clear_cache() {
         
         // delete previous cache
         $cache->delete_cache();
+        
         // get all files in the src folder
         $src = $cache->recurse_get_files(getcwd().'/src','.class.php');
         
@@ -95,7 +96,9 @@ function gluon_clear_cache() {
         /******   ./GATHER THEMES YML   ******/
         
         /******   BUILD THEMES   ******/
-            if(false === $cache->build_themes())
-                $error->display_errors(true,true);   
+            $rendered = $cache->build_themes();
+            if(false === $rendered)
+                $error->display_errors(true,true);
+            // 
         /******   ./BUILD THEMES   ******/
 }
