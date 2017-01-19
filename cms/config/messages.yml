@@ -1,0 +1,15 @@
+warning:
+notice:
+    success:
+        uploaded: "'$file['name'] . ' was saved successfully.'"
+    theme_skipped:
+        name: 'Theme ".$name." [name] not set\nTheme skipped\n'
+        type: 'Theme ".$app['name']." [type] not set\nTheme skipped\n'
+        version: 'Theme ".$app['name']." version: ".$tcv." not compatible with current version: ".$cv."\nTheme skipped\n'
+error:
+    upload:
+        sizemax: '"This file (".$files[$i]["name"].") has exceeded the allowed size limit. (".$files[$i]["size"].")"'
+        notallowed: '"This file (".$files[$i]['name'].") type is not allowed. (". $files[$i]['type'] .")"'     
+        movefile: 'Failed to move file'
+        upload: 'File failed to upload'
+        malicious: 'File contains potential malicious content'

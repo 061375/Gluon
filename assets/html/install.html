@@ -7,8 +7,11 @@
         body {
             font-family: Helvetica;
         }
+        h2 {
+            text-align: center;
+        }
         .container {
-            transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
             width: 100vw;
             max-width: 320px;
             position: relative;
@@ -17,8 +20,15 @@
             opacity: 1;
         }
         .container.fadeout {
-            max-width: 100vw;
+            max-width: 90vw;
             opacity: 0;
+        }
+        .container.fadeout .box {
+            height: 320px;
+        }
+        .container.fadeout img {
+            height: 320px;
+            width: 320px;
         }
         .box {
             transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
@@ -45,6 +55,9 @@
             border: solid 1px #d8d8d8;
             cursor: pointer;
         }
+        button:focus {
+            outline: none;
+        }
         .box.start {
             transform: rotateX(0deg);
             box-shadow: 0px 0px 50px #7d7d7d;
@@ -67,6 +80,10 @@
             text-align: right;
             display: none;
         }
+        .stepfour {
+            text-align: right;
+            display: none;
+        }
         .running {
             display: none;
             text-align: center;
@@ -74,8 +91,14 @@
         .prev-step {
             float: left;
         }
-        .port {
+        .ftpport {
             width: 60px !important;
+        }
+        .install-pro {
+            width: 100%;
+            height: 150px;
+            overflow-y: auto;
+            text-align: left;
         }
         @keyframes mymove {
             from {top: 0px;opacity: 0;box-shadow: 0px 1px 5px #7d7d7d;}
@@ -109,24 +132,67 @@
                     $('.stepthree').css('display','block');
                 },100);
             });
-            $('.prev-step').on('click',function(){
+            $('.prev-stepa').on('click',function(){
                 $('.box').addClass('startb');
                 setTimeout(function(){
                     $('.stepthree').css('display','none');
                     $('.steptwo').css('display','block');
                 },100);
             });
+            $('.step-three').on('click',function(){
+                $('.box').addClass('startb');
+                setTimeout(function(){
+                    $('.stepthree').css('display','none');
+                    $('.stepfour').css('display','block');
+                },100);
+            });
+            $('.prev-stepb').on('click',function(){
+                $('.box').removeClass('startb');
+                setTimeout(function(){
+                    $('.stepfour').css('display','none');
+                    $('.stepthree').css('display','block');
+                },100);
+            });
+            var m = [
+                'Checking database connection...',
+                'Success!',
+                'Testing FTP connection...',
+                'Success!',
+                'Creating authorization hash...',
+                'Success!',
+                'Uploading base CMS files...',
+                'Success!'
+            ];
+            var id;
+            var i = 0;
             $('.run-install').on('click',function(){
-                $('.stepthree').fadeOut("fast",function(){
+                $('.stepfour').fadeOut("fast",function(){
                     $('.running').fadeIn("fast",function(){
-                        $('.logo').addClass("spinup");
-                        setTimeout(function(){
-                            $('.container').addClass('fadeout');
-                        },5000);
+                        //$('.logo').addClass("spinup");
+                        var d = document.createElement('div');
+                            $(d).html(m[i]);
+                        $('.install-pro').append(d);
+                        i++;
+                        id = setInterval(function(){
+                            var d = document.createElement('div');
+                                $(d).html(m[i]);
+                            $('.install-pro').append(d);
+                            $(".install-pro").scrollTop($(".install-pro")[0].scrollHeight);
+                            i++;
+                            if (i>=m.length) {
+                                clearInterval(id);
+                                done();
+                            }
+                        },3000);
+                        
                     });
                 })
             });
         });
+        function done() {
+            console.log('done!');
+            $('.container').addClass('fadeout');
+        }
     </script>
 </head>
 
@@ -144,65 +210,56 @@
             </div>
             <div class="steptwo">
                 <h2>
-                    Database Connection
+                    Let's setup your login
                 </h2>
-                <label for="host">
-                    Host<br />
-                    <input type="text" class="host" />
-                </label>
+                <input type="text" class="username" placeholder="USER NAME" />
                 <br />
-                <label for="dbname">
-                    DB Name<br />
-                    <input type="text" class="dbname" />
-                </label>
+                <input type="text" class="email" placeholder="EMAIL" />
                 <br />
-                <label for="username">
-                    User Name<br />
-                    <input type="text" class="username" />
-                </label>
-                <br />
-                <label for="password">
-                    Password<br />
-                    <input type="password" class="password" />
-                </label>
+                <input type="password" class="password" placeholder="PASSWORD" />
                 <br />
                 <button class="step-two">Next Step --></button>
             </div>
             <div class="stepthree">
                 <h2>
+                    Database Connection
+                </h2>
+                <input type="text" class="dbhost" placeholder="HOST" />
+                <br />
+                <input type="text" class="dbname" placeholder="DATABASE" />
+                <br />
+                <input type="text" class="dbusername" placeholder="USER NAME"/>
+                <br />
+                <input type="password" class="dbpassword" placeholder="PASSWORD" />
+                <br />
+                <button class="prev-stepa"><-- Prev Step</button>
+                <button class="step-three">Next Step --></button>
+            </div>
+            <div class="stepfour">
+                <h2>
                     FTP Connection
                 </h2>
-                <label for="host">
-                    Host<br />
-                    <input type="text" class="host" />
-                </label>
+                <input type="text" class="ftphost" placeholder="HOST" />
                 <br />
-                <label for="protocol">
-                    Protocol<br />
-                    <input type="text" class="port" placeholder="port" />
-                    <select class="protocol">
-                        <option value="ftp">FTP - File Transfer Protocol</option>
-                        <option value="sftp">SFTP - SSH File Transfer Protocol</option>
-                    </select>
-                </label>
+                <input type="text" class="ftpport" placeholder="PORT" />
+                <select class="ftpprotocol">
+                    <option value="ftp">FTP - File Transfer Protocol</option>
+                    <option value="sftp">SFTP - SSH File Transfer Protocol</option>
+                </select>
+
                 <br />
-                <label for="username">
-                    User Name<br />
-                    <input type="text" class="username" />
-                </label>
+                <input type="text" class="ftpusername" placeholder="USER NAME"/>
                 <br />
-                <label for="password">
-                    Password<br />
-                    <input type="password" class="password" />
-                </label>
+                <input type="password" class="ftppassword" placeholder="PASSWORD" />
                 <br />
-                <button class="prev-step"><-- Prev Step</button>
+                <button class="prev-stepb"><-- Prev Step</button>
                 <button class="run-install">Install</button>
             </div>
             <div class="running">
                 <h2>
                     Please wait...
                 </h2>
+                <div class="install-pro"></div>
             </div>
         </div>
     </div>

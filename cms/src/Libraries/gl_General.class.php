@@ -28,7 +28,7 @@ class gl_General
      *  */
     public static function post_variable($key,$else='',$bool=false,$die=false,$redirect='',$message='')
     {
-		$POST = self::cleanSuperGlobal($_POST,'clean_post');
+	$POST = self::cleanSuperGlobal($_POST,'clean_post');
         if($bool == false){
             $return = isset($POST[$key]) ? $POST[$key] : $else;
         }else{
@@ -63,8 +63,8 @@ class gl_General
     /**
      *
      *  */
-	public static function get_request($key,$else=''){
-		$REQUEST = self::cleanSuperGlobal($_REQUEST,'clean_request');
+    public static function get_request($key,$else=''){
+	$REQUEST = self::cleanSuperGlobal($_REQUEST,'clean_request');
         return isset($REQUEST[$key]) ? $REQUEST[$key] : $else;
     }
     /**
@@ -131,16 +131,18 @@ class gl_General
 		}
     }
     /**
-     *
+     *	
      *  */
     public static function dateToMonthsCount($date_from) {
-        $current_date = date('Y-m-d H:i:s'); //current date
+        $current_date = date('Y-m-d H:i:s',strtotime('now')); //current date
         $diff = strtotime($current_date) - strtotime($date_from);
         $months = floor(floatval($diff) / (60 * 60 * 24 * 365 / 12));
         return $months;
     }
     /**
-     *
+     * returns true if date is format Y/m/d
+     * @param string
+     * return bool
      *  */
     public static function checkDateFormat($date) {
         if(preg_match('/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/', $date)){
@@ -150,7 +152,9 @@ class gl_General
         }
     }
     /**
-     *
+     * converts an object into a simple array
+     * @param object $obj
+     * return array $arr
      *  */
     public function simpleObjectToArray($obj = null) {
         if(empty($obj))return;
@@ -162,8 +166,46 @@ class gl_General
         }
         return $arr;
     }
-	public static function compare_version()
+    /**
+     * creates a message from the message.yml file
+     * @param string
+     * @param array
+     * @return string
+     * */
+    public static function message($level,$keys)
+    {
+	$return = 'Gluon '.ucfirst($level).': ';
+	$return .= \Libraries\gl_Cache::get_cache_byfile('messages.yml.php',$keys);
+	return $return;
+    }
+    /**
+     * recurse_array_get
+     * @param array $array
+     * @param $keys - the path to the array key of interest
+     * 	      example: to find $array['a']['b']['c'] use: recurse_array_get($array,array('a','b','c'));
+     * @param string $default
+     * @return mixed (array, bool)
+     * */
+    public static function recurse_array_get($array,$keys,$default = '')
+    {
+	// 
+	if(false == is_array($keys))
+	    return self::is_set($array,$keys,$default);
+	
+	$result = '';
+	foreach($keys as $i => $key)
 	{
-		
+	    if(isset($array[$key])) {
+		if(is_array($array[$key])) {
+		    $result = test($array[$key],$keys);
+		    if(!is_array($result)) {
+			return $result;
+		    }
+		}else{
+		    return $array[$key];
+		}
+	    }
 	}
+	return $default;
+    }
 }

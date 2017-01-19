@@ -239,9 +239,10 @@ class gl_Cache
      * @param string the file name ex: app.yml.php
      * @return array
      * */
-    public static function get_cache_byfile($file)
+    public static function get_cache_byfile($file,$key = false)
     {
         include('cache/'.$file);
+	if(false !== $key)return \Libraries\gl_General::recurse_array_get($return,$key);
         return $return;
     }
     
