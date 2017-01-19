@@ -7,7 +7,7 @@ error_handler: gl_ErrorHandler
 # scripts will be rendered individually non-minified
 # - if creating a theme using a pre-processor like Grunt ot Gulp then working files location needs to be specified (see documention)
 # markup will not be compressed
-debugmode: true
+debugmode: false
 media:
     upload_folder: upload
     allowed_mimetypes: ['image/gif', 'image/jpeg', 'image/png', 'image/pjpeg','application/pdf']

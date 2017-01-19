@@ -1,15 +1,15 @@
 warning:
 notice:
     success:
-        uploaded: "'$file['name'] . ' was saved successfully.'"
+        uploaded: "[#0#] was saved successfully."
     theme_skipped:
-        name: 'Theme ".$name." [name] not set\nTheme skipped\n'
-        type: 'Theme ".$app['name']." [type] not set\nTheme skipped\n'
-        version: 'Theme ".$app['name']." version: ".$tcv." not compatible with current version: ".$cv."\nTheme skipped\n'
+        name: "Theme [#0#] [name] not set\nTheme skipped\n"
+        type: "Theme [#0#] [type] not set\nTheme skipped\n"
+        version: "Theme [#0#] version: [#1#] not compatible with current version: [#2#] --- Theme skipped\n"
 error:
     upload:
-        sizemax: '"This file (".$files[$i]["name"].") has exceeded the allowed size limit. (".$files[$i]["size"].")"'
-        notallowed: '"This file (".$files[$i]['name'].") type is not allowed. (". $files[$i]['type'] .")"'     
-        movefile: 'Failed to move file'
-        upload: 'File failed to upload'
-        malicious: 'File contains potential malicious content'
+        sizemax: "This file [#0#] has exceeded the allowed size limit. [#1#]"
+        notallowed: "This file [#0#] type is not allowed. [#1#]"    
+        movefile: "Failed to move file"
+        upload: "File failed to upload"
+        malicious: "File contains potential malicious content"

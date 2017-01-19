@@ -83,12 +83,12 @@ class gl_Cache
             $app = @yaml_parse_file($f);
             $tname = \Libraries\gl_General::is_set($app,'name',false);
             if(false === $tname) {
-                print "\nGluon Notice: Theme ".$name." [name] not set\nTheme skipped\n";
+                print \Libraries\gl_General::message('notice',array('notice','theme_skipped','name'),array($name));
                 continue;
             }
             $type = \Libraries\gl_General::is_set($app,'type',false);
             if(false === $type) {
-                print "\nGluon Notice: Theme ".$app['name']." [type] not set\nTheme skipped\n";
+                print \Libraries\gl_General::message('notice',array('notice','theme_skipped','type'),array($app['name']));
                 continue;
             }
             $yml[$type][$name]['path'] = $f;
@@ -96,7 +96,7 @@ class gl_Cache
             $tcv = str_replace('.x','',$app['core']);
             if($cv > $tcv){
                 unset($yml[$type][$name]);
-                print "\nGluon Notice: Theme ".$app['name']." version:".$tcv." not compatible with current version: ".$cv."\nTheme skipped\n";
+                print \Libraries\gl_General::message('notice',array('notice','theme_skipped','version'),array($app['name'],$tcv,$cv));
             }else{
                 $yml[$type][$name]['info'] = $app;
             }
@@ -197,7 +197,12 @@ class gl_Cache
                             $scr.=$chk;
                         }
                     }
-                    file_put_contents($current.'../../../upload/_/js/script.js',$scr);
+                    if('theme'==$type) {
+                        $spath = '../../../upload/_/js/script.js';
+                    }else{
+                        $spath = '../../../_/js/script.js';
+                    }
+                    @file_put_contents($current.$spath,$scr);
                     $build['js'] = '<script src="/_/js/script.js'.'?c='.$now.'"></script>'."\n";
                     // gather ,minify, then build css
                     $scr = '';
@@ -209,7 +214,12 @@ class gl_Cache
                             $scr.=$chk;
                         }
                     }
-                    file_put_contents($current.'../../../upload/_/js/style.css',$scr);
+                    if('theme'==$type) {
+                        $spath = '../../../upload/_/css/style.css';
+                    }else{
+                        $spath = '../../../_/css/style.css';
+                    }
+                    @file_put_contents($current.$spath,$scr);
                     $build['css'] = '<link rel="stylesheet" href="/_/css/style.css'.'?c='.$now.'"/>'."\n";
                 }
                 // render theme HTML file files
@@ -219,7 +229,7 @@ class gl_Cache
                     if(false === $debugmode) {
                         $rendered = $this->compress($rendered);
                     }
-                    $return[$type][$tname] = $rendered;
+                    $return[$type][$tname][basename($path)] = $rendered;
                 }
             }
         }
@@ -242,7 +252,7 @@ class gl_Cache
     public static function get_cache_byfile($file,$key = false)
     {
         include('cache/'.$file);
-	if(false !== $key)return \Libraries\gl_General::recurse_array_get($return,$key);
+        if(false !== $key)return \Libraries\gl_General::recurse_array_get($return,$key);
         return $return;
     }
     

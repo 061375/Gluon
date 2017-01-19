@@ -172,10 +172,13 @@ class gl_General
      * @param array
      * @return string
      * */
-    public static function message($level,$keys)
+    public static function message($level,$keys,$sprint)
     {
 	$return = 'Gluon '.ucfirst($level).': ';
 	$return .= \Libraries\gl_Cache::get_cache_byfile('messages.yml.php',$keys);
+	foreach($sprint as $k => $v) {
+		$return = str_replace('[#'.$k.'#]',$v,$return);
+	}
 	return $return;
     }
     /**
@@ -188,24 +191,24 @@ class gl_General
      * */
     public static function recurse_array_get($array,$keys,$default = '')
     {
-	// 
-	if(false == is_array($keys))
-	    return self::is_set($array,$keys,$default);
-	
-	$result = '';
-	foreach($keys as $i => $key)
-	{
-	    if(isset($array[$key])) {
-		if(is_array($array[$key])) {
-		    $result = test($array[$key],$keys);
-		    if(!is_array($result)) {
-			return $result;
-		    }
-		}else{
-		    return $array[$key];
+		//
+		if(false == is_array($keys))
+			return self::is_set($array,$keys,$default);
+
+		$result = '';
+		foreach($keys as $i => $key)
+		{
+			if(isset($array[$key])) {
+				if(is_array($array[$key])) {
+					$result = self::recurse_array_get($array[$key],$keys);
+					if(!is_array($result)) {
+						return $result;
+					}
+				}else{
+					return $array[$key];
+				}
+			}
 		}
-	    }
-	}
-	return $default;
+		return $default;
     }
 }

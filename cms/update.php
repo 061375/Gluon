@@ -39,6 +39,9 @@ function gluon_clear_cache() {
         $database_path = 'config/database.yml';
         $database_cpath = 'cache/database.yml.php';
         
+        $messages_path = 'config/messages.yml';
+        $messages_cpath = 'cache/messages.yml.php';
+        
         // init classes
         require_once('src/Libraries/gl_Cache.class.php');
         require_once('src/Libraries/gl_ErrorHandler.class.php');
@@ -48,6 +51,14 @@ function gluon_clear_cache() {
         
         // delete previous cache
         $cache->delete_cache();
+        
+        /******   MESSAGES YML   ******/
+            // parse and deal with the messages config file
+            $app = @yaml_parse_file($messages_path);
+            // create messages.yml.php
+            if(false === $cache->add_config($app,$messages_cpath))
+                $error->display_errors(true,true);
+        /******   ./MESSAGES YML   ******/
         
         // get all files in the src folder
         $src = $cache->recurse_get_files(getcwd().'/src','.class.php');
@@ -99,6 +110,18 @@ function gluon_clear_cache() {
             $rendered = $cache->build_themes();
             if(false === $rendered)
                 $error->display_errors(true,true);
-            // 
         /******   ./BUILD THEMES   ******/
+        
+        // add admin themes to cache
+        foreach($rendered['admintheme'] as $key => $theme) {
+            if(false === $cache->add_config($theme,'cache/admintheme.'.$key.'.yml.php'))
+                $error->display_errors(true,true);   
+        }
+        
+        // add admin themes to cache
+        foreach($rendered['theme'] as $key => $theme) {
+            if(false === $cache->add_config($theme,'../upload/cache/theme.'.$key.'.yml.php'))
+                $error->display_errors(true,true);   
+        }
+        //print "\nrendered\n";print_r($rendered );exit();/*REMOVE ME*/
 }
