@@ -2,12 +2,13 @@
 # but you can specify another folder to attempt to autoload your own code
 src_alt:
 error_handler: gl_ErrorHandler
+jquery: _/components/jquery/jquery-3.1.1.min.js
 # if true then:
 # infomration about include paths and other info will be rendered
 # scripts will be rendered individually non-minified
 # - if creating a theme using a pre-processor like Grunt ot Gulp then working files location needs to be specified (see documention)
 # markup will not be compressed
-debugmode: false
+debugmode: true
 media:
     upload_folder: upload
     allowed_mimetypes: ['image/gif', 'image/jpeg', 'image/png', 'image/pjpeg','application/pdf']

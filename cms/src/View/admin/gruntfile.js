@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         uglify: {
           my_target: {
             files: {
-                '../../../../upload/_/js/script.js':['/_/components/js/*.js'] 
+                '_/js/script.js':['_/components/js/*.js'] 
             }
           }
         },
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                 options: {
                     config: 'config.rb',
                     /* during development comment out the following line */
-					outputStyle:'compressed'
+		    outputStyle:'compressed'
                 }
             }
         },

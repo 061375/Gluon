@@ -1,0 +1,193 @@
+/**
+ *
+ * Install
+ * 
+ * @author Jeremy Heminger  <j.heminger@061375.com>
+ *
+ *
+ * @requires Ajax to setup a session and to send the install
+ * 
+ * */
+var Install = (function() { 
+    
+    "use strict";
+    
+    var session_url = false;
+    
+    var start = $('.startb');
+    
+    var next_step = $('.next-step');
+    
+    var prev_step = $('.prev-step');
+    
+    var run_install = $('.run-install'); 
+    
+    var id, i;
+    
+    /**
+    * creates a session
+    * @returns {Void}
+    * */
+    var init_session = function(callback) {
+        $.logThis('Install::init_session');
+        Ajax.init_session(callback);   
+    }
+    
+    /**
+    * when an email is submitted checks if a session is set if false ask Ajax to set one
+    * @returns {Void}
+    * */
+    var is_session = function(callback) {
+        $.logThis('Install::is_session');
+        if (!Ajax.return_session())  {
+            init_session(callback);
+        }else{
+            session_url = Ajax.return_session_url();
+            return true;
+        }
+        return false;
+    }
+    /**
+    * @returns {Void}
+    * */
+    var start_install = function() {
+        var $this = $(this);
+        $('.box').addClass('start');
+        setTimeout(function(){
+            $('.box').addClass('startb');
+            setTimeout(function(){
+                $this.css('display','none');
+                $this.css('display','block');
+            },100);
+        },1000);
+    }
+    /**
+    * @returns {Void}
+    * */
+    var next = function() {
+        var $this = $(this);
+        var valid = true;
+        $(this).parent().find('input,select',function(){
+            if($(this).hasClass("required")) {
+                if ($(this).val() == '') {
+                    valid = false;
+                    $(this).prev().css('display','block');
+                }else{
+                    $(this).prev().css('display','none');
+                }
+            }
+        });
+        if($('.box').hasClass('startb')) {
+            $('.box').removeClass('startb');
+        }else{
+            $('.box').addClass('startb');
+        }
+        setTimeout(function(){
+            $this.parent().css('display','none');
+            $this.parent().next().css('display','block');
+        },100);
+    }
+    /**
+    * @returns {Void}
+    * */
+    var prev = function() {
+        var $this = $(this);
+        var valid = true;
+        if($('.box').hasClass('startb')) {
+            $('.box').removeClass('startb');
+        }else{
+            $('.box').addClass('startb');
+        }
+        setTimeout(function(){
+            $this.parent().css('display','block');
+            $this.parent().next().css('display','none');
+        },100);
+    }
+    /**
+    * @returns {Void}
+    * */
+    var runinstall = function() {
+        i = 0;
+        $(this).parent().fadeOut("fast",function(){
+            $('.running').fadeIn("fast",function(){
+                $.logThis('Likes::runinstall');
+                runAjax('Checking database connection...',
+                        'install_database',
+                        {
+                            dbhost:$('.dbhost').val(),
+                            dbname:$('.dbname').val(),
+                            dbusername:$('.dbusername').val(),
+                            password:$('.password').val()
+                        },function(){
+                    runAjax('Testing FTP connection...',
+                        'test_ftp',
+                        {
+                            ftphost:$('.ftphost').val(),
+                            dbname:$('.dbname').val(),
+                            ftpport:$('.ftpport').val(),
+                            ftpprotocol:$('.ftpprotocol').val(),
+                            ftpusername:$('.ftpusername').val(),
+                            ftppassword:$('.ftppassword').val()
+                        },function(){
+                        runAjax('Adding admin user...',
+                            'add_user',
+                            {
+                                username:$('.username').val(),
+                                email:$('.email').val(),
+                                password:$('.password').val()
+                            },function(){
+                            setTimeout(function(){
+                                $('.container').addClass('fadeout');
+                                // redirect to admin
+                            },2000);
+                        });  
+                            
+                    });       
+                });
+                
+            });
+        });
+    }
+    var runAjax = function(message,method,data,callback) {
+        var d = document.createElement('div');
+            $(d).html(message);
+        $('.install-pro').append(d);
+        var p = Ajax.getData(method,data);
+        // result
+        Ajax.dataResult(p,function(data) {
+            var d = document.createElement('div');
+                $(d).html(data.message);
+            $('.install-pro').append(d);
+            callback();
+        },function(error){
+            var d = document.createElement('div');
+                $(d).css('color','red');
+                $(d).html(error);
+            $('.install-pro').append(d);
+            callback();
+        });   
+    }
+    /**
+     *
+     *
+     * */
+    var bindActions = function() {
+        start.on('click', start_install);
+        next_step.on('click', next);
+        prev_step.on('click', prev);
+        run_install.on('click', runinstall);
+    };
+    /**
+    * initialize
+    * @returns {Void}
+    * */
+    var init = function(s) {
+        session_url = s;
+        init_session();
+        bindActions();
+    };
+    
+    return {
+      init: init,
+    };   
+}());

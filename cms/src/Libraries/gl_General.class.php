@@ -179,7 +179,7 @@ class gl_General
 	foreach($sprint as $k => $v) {
 		$return = str_replace('[#'.$k.'#]',$v,$return);
 	}
-	return $return;
+	return $return."\n";
     }
     /**
      * recurse_array_get

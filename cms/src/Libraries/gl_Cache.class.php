@@ -1,6 +1,9 @@
 <?php
 #Libraries\gl_Cache
 namespace Libraries;
+
+use Symfony\Component\Yaml\Yaml;
+
 class gl_Cache
 {
     
@@ -58,19 +61,22 @@ class gl_Cache
     {
         if(false == file_exists($path)) {
             $error[] = @file_put_contents($path,$this->header);
-            $error[] = @file_put_contents($path,'return array(',FILE_APPEND);
+            $error[] = @file_put_contents($path,'$return = array(',FILE_APPEND);
         }
         $out = '';
         foreach($src as $s) {
             $out .= "'".$s."',";
         }
-        $error[] = @file_put_contents($path,$out.',',FILE_APPEND);
+        $error[] = @file_put_contents($path,$out,FILE_APPEND);
         if(in_array(false,$error)){
             $this->errors->set_error_message(__METHOD__.' error creating cache');
             return false;
         }
         return true;
     }
+    /**
+     * @return bool
+     * */
     public function themes()
     {
         $v = json_decode(file_get_contents(getcwd().'/v/.version'));
@@ -80,7 +86,7 @@ class gl_Cache
         $ymls = $this->recurse_get_files(getcwd().'/src/View/','.info.yml',$ymls);
         foreach($ymls as $f) {
             $name = str_replace('.info.yml','',basename($f));
-            $app = @yaml_parse_file($f);
+            $app = Yaml::parse(file_get_contents($f));
             $tname = \Libraries\gl_General::is_set($app,'name',false);
             if(false === $tname) {
                 print \Libraries\gl_General::message('notice',array('notice','theme_skipped','name'),array($name));
@@ -101,9 +107,11 @@ class gl_Cache
                 $yml[$type][$name]['info'] = $app;
             }
         }
-        if(false === $this->add_config($yml,'cache/themes.yml.php'))
+        if(false === $this->add_config($yml,'cache/themes.yml.php')) {
             return false;
+        }
         // else
+	if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__METHOD__,'cache/themes.yml.php'));
             return true;
     }
     /**
@@ -146,9 +154,10 @@ class gl_Cache
     {
         $error = array();
         $theme_yml = self::get_cache_byfile('themes.yml.php');
-        $debugmode = self::get_cache_byfile('app.yml.php');
-        $debugmode = \Libraries\gl_General::is_set($debugmode,'debugmode',false);
+        $app = self::get_cache_byfile('app.yml.php');
+        $debugmode = \Libraries\gl_General::is_set($app,'debugmode',false);
         if(true == $debugmode)$debugmode = true;
+	$jquery = \Libraries\gl_General::is_set($app,'jquery',false);
         $now = date('dis',strtotime('now'));
         $return = array();
         $build = array();
@@ -171,22 +180,27 @@ class gl_Cache
                         $path = $current.'_/components/js';
                 }
                 $js = self::recurse_get_files($path,'.js');
+		array_unshift($js,$jquery);
+		
                 // get stylsheets
                 $path = $current.'_/css';
                 $css = self::recurse_get_files($path,'.css');
+		
+		
     
+    // IF DEBUGMODE
                 if(true === $debugmode) {
                     // gather and build scripts
                     $build['js'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($js as $j) {
-                        $build['js'] .= '<script src="'.str_replace(getcwd(),'',$j).'?c='.$now.'"></script>'."\n";
+                        $build['js'] .= '<script src="'.str_replace(getcwd().'/','',$j).'?c='.$now.'"></script>'."\n";
                     }
                     // gather and build css
                     $build['css'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($css as $c) {
-                        $build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd(),'',$c).'?c='.$now.'"/>'."\n";
+                        $build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd().'/','',$c).'?c='.$now.'"/>'."\n";
                     }
-                }else{
+    /* ELSE */  }else{
                     // gather ,minify, then build scripts
                     $scr = '';
                     foreach($js as $j) {
@@ -202,12 +216,14 @@ class gl_Cache
                     }else{
                         $spath = '../../../_/js/script.js';
                     }
-                    @file_put_contents($current.$spath,$scr);
-                    $build['js'] = '<script src="/_/js/script.js'.'?c='.$now.'"></script>'."\n";
+                    if(false !== @file_put_contents($current.$spath,$scr)) {
+			if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__METHOD__.'->'.__LINE__,$current.$spath));
+		    }
+                    $build['js'] = '<script src="_/js/script.js'.'?c='.$now.'"></script>'."\n";
                     // gather ,minify, then build css
                     $scr = '';
                     foreach($css as $c) {
-                        $chk = file_get_contents($c);
+                        $chk = @file_get_contents($c);
                         if(false === $chk){
                             $error[] = true;
                         }else{
@@ -219,13 +235,16 @@ class gl_Cache
                     }else{
                         $spath = '../../../_/css/style.css';
                     }
-                    @file_put_contents($current.$spath,$scr);
-                    $build['css'] = '<link rel="stylesheet" href="/_/css/style.css'.'?c='.$now.'"/>'."\n";
+		    
+                    if(false !== @file_put_contents($current.$spath,$scr)) {
+			if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__METHOD__.'->'.__LINE__,$current.$spath));
+		    }
+                    $build['css'] = '<link rel="stylesheet" href="_/css/style.css'.'?c='.$now.'"/>'."\n";
                 }
                 // render theme HTML file files
                 $html = self::recurse_get_files($current,'.html.php');
                 foreach($html as $path) {
-                    $rendered = $this->renderPhpToString($path,array('build'=>$build));
+                    $rendered = addslashes($this->renderPhpToString($path,array('build'=>$build)));
                     if(false === $debugmode) {
                         $rendered = $this->compress($rendered);
                     }

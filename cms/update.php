@@ -1,7 +1,28 @@
 <?php
+/**
+ *
+ *
+ * Update for Gluon
+ * performs maintenance operations
+ *
+ * @author Jeremy Heminger <j.heminger@061375.com>
+ * 
+ *
+ *
+ * */
+
+ ini_set('display_errors', 1); 
+error_reporting(E_ALL);
+// include Symfony components as necessary
+include_once('vendor/autoload.php');
+use Symfony\Component\Yaml\Yaml;
+
+
 $task = isset($_GET['task']) ? $_GET['task'] : false;
 if(false === $task)$task = trim($argv[1]);
 
+$verbose = isset($argv[2]) ? $argv[2] : false;
+if('-v' == $verbose)define('VERBOSE',true);;
 
 $help =
 '
@@ -11,7 +32,7 @@ up - update to the latest version
 switch($task)
 {
     case 'cc':
-        gluon_clear_cache();
+        gluon_clear_cache($verbose);
         break;
     case 'up':
         break;
@@ -27,9 +48,11 @@ switch($task)
         }
         die($err);
 }
-
-function gluon_clear_cache() {
-            
+/**
+ * clears the cache
+ * */
+function gluon_clear_cache($verbose) {
+         
         // init vars
         $classes_path = 'cache/classes.yml.php';
         
@@ -54,10 +77,11 @@ function gluon_clear_cache() {
         
         /******   MESSAGES YML   ******/
             // parse and deal with the messages config file
-            $app = @yaml_parse_file($messages_path);
+            $app = Yaml::parse(file_get_contents($messages_path));
             // create messages.yml.php
             if(false === $cache->add_config($app,$messages_cpath))
                 $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$messages_cpath));
         /******   ./MESSAGES YML   ******/
         
         // get all files in the src folder
@@ -69,7 +93,7 @@ function gluon_clear_cache() {
         
         /******   APP YML   ******/   
             // parse and deal with the application config file
-            $app = @yaml_parse_file($app_path);
+            $app = Yaml::parse(file_get_contents($app_path));
             
             // if an alt src folder is specified
             if(isset($app['src_alt']) AND '' != trim($app['src_alt'])) {
@@ -91,14 +115,16 @@ function gluon_clear_cache() {
             // create app.yml.php
             if(false === $cache->add_config($app,$app_cpath))
                 $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$app_cpath));
         /******   ./APP YML   ******/  
             
         /******   DATABASE YML   ******/
             // parse and deal with the database config file
-            $app = @yaml_parse_file($database_path);
+            $app = Yaml::parse(file_get_contents($database_path));
             // create database.yml.php
             if(false === $cache->add_config($app,$database_cpath))
                 $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$database_cpath));
         /******   ./DATABASE YML   ******/
         
         /******   GATHER THEMES YML   ******/
@@ -115,13 +141,15 @@ function gluon_clear_cache() {
         // add admin themes to cache
         foreach($rendered['admintheme'] as $key => $theme) {
             if(false === $cache->add_config($theme,'cache/admintheme.'.$key.'.yml.php'))
-                $error->display_errors(true,true);   
+                $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,'cache/admintheme.'.$key.'.yml.php'));
         }
         
         // add admin themes to cache
         foreach($rendered['theme'] as $key => $theme) {
             if(false === $cache->add_config($theme,'../upload/cache/theme.'.$key.'.yml.php'))
-                $error->display_errors(true,true);   
+                $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,'../upload/cache/theme.'.$key.'.yml.php'));
         }
-        //print "\nrendered\n";print_r($rendered );exit();/*REMOVE ME*/
+
 }

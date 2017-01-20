@@ -1,5 +1,7 @@
 warning:
 notice:
+    verbose:
+        added: "[#0#] : [#1#] added successfully"
     success:
         uploaded: "[#0#] was saved successfully."
     theme_skipped:
