@@ -52,12 +52,13 @@ var Install = (function() {
     * */
     var start_install = function() {
         var $this = $(this);
+        $this.css('display','none');
         $('.box').addClass('start');
         setTimeout(function(){
             $('.box').addClass('startb');
             setTimeout(function(){
-                $this.css('display','none');
-                $this.css('display','block');
+                $this.parent().css('display','none');
+                $this.parent().next().css('display','block');
             },100);
         },1000);
     }
@@ -99,14 +100,24 @@ var Install = (function() {
             $('.box').addClass('startb');
         }
         setTimeout(function(){
-            $this.parent().css('display','block');
-            $this.parent().next().css('display','none');
+            $this.parent().css('display','none');
+            $this.parent().prev().css('display','block');
         },100);
     }
     /**
     * @returns {Void}
     * */
     var runinstall = function() {
+        var err = false;
+        $('input').each(function(){
+            if($(this).hasClass('required') && $(this).val() == ''){
+                err = true;
+                $(this).prev().css('display','block');
+            }else{
+                $(this).prev().css('display','none');
+            }
+        });
+        if (err) return false;
         i = 0;
         $(this).parent().fadeOut("fast",function(){
             $('.running').fadeIn("fast",function(){
@@ -181,9 +192,7 @@ var Install = (function() {
     * initialize
     * @returns {Void}
     * */
-    var init = function(s) {
-        session_url = s;
-        init_session();
+    var init = function() {
         bindActions();
     };
     

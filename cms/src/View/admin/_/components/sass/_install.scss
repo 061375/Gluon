@@ -39,6 +39,7 @@
         width: 100%;
     }
     button {
+        float: right;
         background: rgb(255,255,255); /* Old browsers */
         background: -moz-linear-gradient(top,  rgba(255,255,255,1) 51%, rgba(198,198,198,1) 100%); /* FF3.6-15 */
         background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -47,16 +48,16 @@
         border-radius: 5px;
         border: solid 1px #d8d8d8;
         cursor: pointer;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        @include prefix((
+           user-select: none
+        ), webkit moz o );
     }
     input {
         width: 100%;
         margin: 0 0 5px 0;
+        &.required {
+            color: #000;
+        }
     }
     &.start {
         transform: rotateX(0deg);
@@ -64,6 +65,9 @@
     }
     &.startb {
         transform: rotateY(360deg);
+    }
+    .startb {
+        float: none;
     }
     .step {
         display: none;
@@ -89,6 +93,10 @@
     }
     .spinup {
         animation: spinup 3s infinite linear;
+    }
+    .required {
+        color: #ff0000;
+        text-align: left;
     }
 }
 @include keyframes(flyin) {

@@ -43,7 +43,7 @@ var Ajax = (function() {
     * @returns {Void}
     * */
     var dataResult = function(p,callback,ecallback) {
-        p.success( function(data){
+        p.done( function(data){
             if(data.success == 1) {
                 if (typeof callback === "function") {
                     callback(data);
@@ -62,7 +62,7 @@ var Ajax = (function() {
                 }
             } 
         });
-        p.error( function(xhr, ajaxOptions, thrownError){
+        p.fail( function(xhr, ajaxOptions, thrownError){
             var error_text = 'An Error occurred...';
             if ( typeof xhr !== 'undefined') {
                 $.logThis('xhr error '+xhr.status);

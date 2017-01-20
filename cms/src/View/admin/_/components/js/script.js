@@ -72,4 +72,5 @@ var show_log = true;
 // initialize all the classes
 $(document).ready(function(){
   Ajax.init();
+  Install.init();
 });//

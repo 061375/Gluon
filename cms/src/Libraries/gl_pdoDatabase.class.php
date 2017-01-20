@@ -6,9 +6,9 @@ class gl_pdoDatabase
 	
 	private $db;
 	
-	function __construct(ErrorHandler $error_handler )
+	function __construct($error_handler )
 	{
-		$this->errors = new $error_handler;
+		$this->errors = $error_handler;
     }
 	/**
 	 * @param array database options
