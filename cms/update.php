@@ -62,6 +62,9 @@ function gluon_clear_cache($verbose) {
         $database_path = 'config/database.yml';
         $database_cpath = 'cache/database.yml.php';
         
+        $schema_path = 'config/schema.sql';
+        $schema_cpath = 'cache/schema.sql.php';
+        
         $messages_path = 'config/messages.yml';
         $messages_cpath = 'cache/messages.yml.php';
         
@@ -118,6 +121,7 @@ function gluon_clear_cache($verbose) {
                 if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$app_cpath));
         /******   ./APP YML   ******/  
             
+            
         /******   DATABASE YML   ******/
             // parse and deal with the database config file
             $app = Yaml::parse(file_get_contents($database_path));
@@ -126,6 +130,26 @@ function gluon_clear_cache($verbose) {
                 $error->display_errors(true,true);
                 if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$database_cpath));
         /******   ./DATABASE YML   ******/
+    
+            
+        /******   DATABASE SQL   ******/
+            $rebuild = '';
+            $sql = @file_get_contents($schema_path);
+            $sql = explode("\n",$sql);
+            foreach($sql as $line) {
+                if(substr(trim($line),0,2) == '--' OR trim($line) == '')continue;
+                $rebuild .= $line;
+            }
+            
+            $rebuild = addslashes($rebuild);
+            
+            $sql = explode(';',$rebuild);
+            // create database.yml.php
+            if(false === $cache->add_config($sql,$schema_cpath))
+                $error->display_errors(true,true);
+                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$schema_cpath));
+        /******   ./DATABASE SQL   ******/
+        
         
         /******   GATHER THEMES YML   ******/
             if(false === $cache->themes())

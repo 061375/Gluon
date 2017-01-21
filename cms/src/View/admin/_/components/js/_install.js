@@ -119,8 +119,8 @@ var Install = (function() {
         });
         if (err) return false;
         i = 0;
-        $(this).parent().fadeOut("fast",function(){
-            $('.running').fadeIn("fast",function(){
+        //$(this).parent().fadeOut("fast",function(){
+            //$('.running').fadeIn("fast",function(){
                 $.logThis('Likes::runinstall');
                 runAjax('Checking database connection...',
                         'install_database',
@@ -128,7 +128,7 @@ var Install = (function() {
                             dbhost:$('.dbhost').val(),
                             dbname:$('.dbname').val(),
                             dbusername:$('.dbusername').val(),
-                            password:$('.password').val()
+                            dbpassword:$('.dbpassword').val()
                         },function(){
                     runAjax('Testing FTP connection...',
                         'test_ftp',
@@ -156,8 +156,8 @@ var Install = (function() {
                     });       
                 });
                 
-            });
-        });
+            //});
+        //});
     }
     var runAjax = function(message,method,data,callback) {
         var d = document.createElement('div');

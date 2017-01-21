@@ -4,13 +4,16 @@ namespace Gluon;
 class Core {
     public static function install()
     {
+        // verbose any errors experienced during an installation
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+
+        // autoload
+        include('cache/classes.yml.php');
+        foreach($return as $class) {
+            require_once($class);
+        }
         // init classes
-        // these should be in the cache at this point so I will be rewriting this 
-        require_once('src/View/Render.class.php');
-        require_once('src/Libraries/gl_Cache.class.php');
-        require_once('src/Libraries/gl_ErrorHandler.class.php');
-        require_once('src/Libraries/gl_General.class.php');
-        require_once('src/Libraries/gl_pdoDatabase.class.php');
         $error = new \Libraries\gl_ErrorHandler;
         $cache = new \Libraries\gl_Cache($error);
         
@@ -22,17 +25,19 @@ class Core {
             switch($_POST['method'])
             {
                 case 'install_database':
-                    $schema = \Libraries\gl_Cache::get_cache_byfile('schema.yml.php',array('*'));
                     $conn = array('mysql:host='.$_POST['data']['dbhost'].';dbname='.$_POST['data']['dbname'],$_POST['data']['dbusername'],$_POST['data']['dbpassword']);
-                    $db = new \Libraries\gl_pdoDatabase($conn);
-                    $l = count($schema);
-                    for($i=0;$i<$l;$i++) {
-                        $db->Query($schema[$i]);
+                    $db = new \Libraries\gl_pdoDatabase(new \Libraries\gl_ErrorHandler(),array(),false,0);
+                    $db->connect($conn);
+                    $sqls = \Libraries\gl_Cache::get_cache_byfile('schema.sql.php',false);
+
+                    foreach($sqls as $sql){
+                        $db->Query($sql);
                     }
                     break;
                 case 'test_ftp':
                     
-                    if($_POST['data']['ftpprotocol'] == 'ftp') {  
+                    if($_POST['data']['ftpprotocol'] == 'ftp') {
+                        if('' == trim($_POST['data']['ftpport']))$_POST['data']['ftpport'] = 21;
                         $con = ftp_connect($_POST['data']['ftphost'],$_POST['data']['ftpport']);
                         $login_result = ftp_login($con,$_POST['data']['ftpusername'],$_POST['data']['ftppassword']);
                     }else{
@@ -40,8 +45,11 @@ class Core {
                     }
                     break;
                 case 'add_user':
+                    $enc = new \Libraries\gl_Encrypt();
                     $conn = array('mysql:host='.$_POST['data']['dbhost'].';dbname='.$_POST['data']['dbname'],$_POST['data']['dbusername'],$_POST['data']['dbpassword']);
-                    $db = new \Libraries\gl_pdoDatabase($conn);
+                    $db = new \Libraries\gl_pdoDatabase(new \Libraries\gl_ErrorHandler(),array(),false,0);
+                    $db->connect($conn);
+                    //$sql = "INSERT INTO `users` (`username`,`password`,)"
                     break;
                 default:
             }

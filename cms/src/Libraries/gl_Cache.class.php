@@ -121,11 +121,17 @@ class gl_Cache
      * @return bool
      * */
     public function add_config($src,$path) {
+	
+	
         $error[] = @file_put_contents($path,$this->header);
         $error[] = @file_put_contents($path,'$return = array(',FILE_APPEND);
+	
         $out = $this->recurse_built_array($src);
+	
         $error[] = @file_put_contents($path,$out,FILE_APPEND);
+	
         $this->add_tail($path);
+	
         if(in_array(false,$error)){
             $this->errors->set_error_message(__METHOD__.' error creating cache');
             return false;
