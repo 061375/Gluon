@@ -14,10 +14,10 @@ This is meant to be a simple project for my own learning purposes, but I think i
 ### History
 
 1.0.10 - If the Gluon core is in the Gluon namespace then what's with all the prefixes..."old habits", so I reorganized things.
-         * further building and debugging the install process
-         * added the Encrypt class for storing passwords
-         * added operation to set permissions
-         * install clears cache before install begins (the base code should be small, so this should be fine)
+* further building and debugging the install process
+* added the Encrypt class for storing passwords
+* added operation to set permissions
+* install clears cache before install begins (the base code should be small, so this should be fine)
         
 1.0.9 - create core and installation process
         the base version should have the cache filled and will have all the paths setup to run the PHP
