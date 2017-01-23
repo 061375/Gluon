@@ -1,6 +1,12 @@
 <?php
-namespace View;
-
+namespace Gluon\View;
+/**
+ *  
+ *  Render
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2017 
+ *
+ * */
 class Render
 {
     /**

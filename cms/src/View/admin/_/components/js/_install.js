@@ -122,42 +122,38 @@ var Install = (function() {
         //$(this).parent().fadeOut("fast",function(){
             //$('.running').fadeIn("fast",function(){
                 $.logThis('Likes::runinstall');
+                var d = getData($('.step.two'));
                 runAjax('Checking database connection...',
                         'install_database',
-                        {
-                            dbhost:$('.dbhost').val(),
-                            dbname:$('.dbname').val(),
-                            dbusername:$('.dbusername').val(),
-                            dbpassword:$('.dbpassword').val()
-                        },function(){
+                        d,function(){
+                    d = getData($('.step.three'));
                     runAjax('Testing FTP connection...',
                         'test_ftp',
-                        {
-                            ftphost:$('.ftphost').val(),
-                            dbname:$('.dbname').val(),
-                            ftpport:$('.ftpport').val(),
-                            ftpprotocol:$('.ftpprotocol').val(),
-                            ftpusername:$('.ftpusername').val(),
-                            ftppassword:$('.ftppassword').val()
-                        },function(){
+                        d,function(){
+                        d = getData($('.step.one'));
                         runAjax('Adding admin user...',
                             'add_user',
-                            {
-                                username:$('.username').val(),
-                                email:$('.email').val(),
-                                password:$('.password').val()
-                            },function(){
-                            setTimeout(function(){
-                                $('.container').addClass('fadeout');
-                                // redirect to admin
-                            },2000);
-                        });  
-                            
+                            d,function(){
+                            runAjax('Finalizing Install...',
+                            'finalize',
+                            d,function(){
+                                setTimeout(function(){
+                                    $('.container').addClass('fadeout');
+                                    // redirect to admin
+                                },2000);
+                            });
+                        });    
                     });       
                 });
-                
             //});
         //});
+    }
+    var getData = function($t) {
+        var r = {};
+        var data = $t.find('input,select').each(function(){
+            r[$(this).data('name')] = $(this).val();            
+        });
+        return r;
     }
     var runAjax = function(message,method,data,callback) {
         var d = document.createElement('div');

@@ -11,30 +11,49 @@
  *
  * */
 
- ini_set('display_errors', 1); 
+ini_set('display_errors', 1); 
 error_reporting(E_ALL);
+
 // include Symfony components as necessary
 include_once('vendor/autoload.php');
 use Symfony\Component\Yaml\Yaml;
 
 
 $task = isset($_GET['task']) ? $_GET['task'] : false;
-if(false === $task)$task = trim($argv[1]);
+if(false === $task)$task = isset($argv[1]) ? trim($argv[1]) : false;
+if(defined('GLUON_RUN_INSTALL'))$task = '-c';
 
-$verbose = isset($argv[2]) ? $argv[2] : false;
-if('-v' == $verbose)define('VERBOSE',true);;
+$option = isset($argv[2]) ? $argv[2] : false;
+if('-v' == $option)define('VERBOSE',true);;
 
 $help =
 '
-cc - clear application cache
-up - update to the latest version
+[-c] - clear application cache
+[-u] - update to the latest version
+[-p] - set permissions
+[*] [-v] print processes verbose
 ';
 switch($task)
 {
-    case 'cc':
-        gluon_clear_cache($verbose);
+    case '-c':
+        gluon_clear_cache();
         break;
-    case 'up':
+    case '-u':
+        break;
+    case '-p':
+        if(false === $option)
+            die("\nplease provide a user to assign to the updatable folders\n");
+        shell_exec('chown -R '.$option.':'.$option.' ../Gluon');
+        shell_exec('chown -R '.$option.':'.$option.' cache');
+        shell_exec('chown -R '.$option.':'.$option.' v');
+        shell_exec('chown -R '.$option.':'.$option.' config');
+        shell_exec('chown -R '.$option.':'.$option.' ../upload/cache');
+        //
+        shell_exec('chmod -R 755 ../Gluon');
+        shell_exec('chmod -R 777 cache');
+        shell_exec('chmod -R 777 v');
+        shell_exec('chmod -R 777 config');
+        shell_exec('chmod -R 777 ../upload/cache');
         break;
     default:
         if (php_sapi_name() !== 'cli') {
@@ -51,7 +70,7 @@ switch($task)
 /**
  * clears the cache
  * */
-function gluon_clear_cache($verbose) {
+function gluon_clear_cache() {
          
         // init vars
         $classes_path = 'cache/classes.yml.php';
@@ -69,11 +88,11 @@ function gluon_clear_cache($verbose) {
         $messages_cpath = 'cache/messages.yml.php';
         
         // init classes
-        require_once('src/Libraries/gl_Cache.class.php');
-        require_once('src/Libraries/gl_ErrorHandler.class.php');
-        require_once('src/Libraries/gl_General.class.php');
-        $error = new \Libraries\gl_ErrorHandler;
-        $cache = new \Libraries\gl_Cache($error);
+        require_once('src/Libraries/Cache.class.php');
+        require_once('src/Libraries/ErrorHandler.class.php');
+        require_once('src/Libraries/General.class.php');
+        $error = new \Gluon\Libraries\ErrorHandler;
+        $cache = new \Gluon\Libraries\Cache($error);
         
         // delete previous cache
         $cache->delete_cache();
@@ -84,7 +103,8 @@ function gluon_clear_cache($verbose) {
             // create messages.yml.php
             if(false === $cache->add_config($app,$messages_cpath))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$messages_cpath));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,$messages_cpath));
         /******   ./MESSAGES YML   ******/
         
         // get all files in the src folder
@@ -118,7 +138,8 @@ function gluon_clear_cache($verbose) {
             // create app.yml.php
             if(false === $cache->add_config($app,$app_cpath))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$app_cpath));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,$app_cpath));
         /******   ./APP YML   ******/  
             
             
@@ -128,7 +149,8 @@ function gluon_clear_cache($verbose) {
             // create database.yml.php
             if(false === $cache->add_config($app,$database_cpath))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$database_cpath));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,$database_cpath));
         /******   ./DATABASE YML   ******/
     
             
@@ -147,7 +169,8 @@ function gluon_clear_cache($verbose) {
             // create database.yml.php
             if(false === $cache->add_config($sql,$schema_cpath))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,$schema_cpath));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,$schema_cpath));
         /******   ./DATABASE SQL   ******/
         
         
@@ -166,14 +189,16 @@ function gluon_clear_cache($verbose) {
         foreach($rendered['admintheme'] as $key => $theme) {
             if(false === $cache->add_config($theme,'cache/admintheme.'.$key.'.yml.php'))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,'cache/admintheme.'.$key.'.yml.php'));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,'cache/admintheme.'.$key.'.yml.php'));
         }
         
         // add admin themes to cache
         foreach($rendered['theme'] as $key => $theme) {
             if(false === $cache->add_config($theme,'../upload/cache/theme.'.$key.'.yml.php'))
                 $error->display_errors(true,true);
-                if(defined('VERBOSE'))print \Libraries\gl_General::message('notice',array('notice','verbose','added'),array(__LINE__,'../upload/cache/theme.'.$key.'.yml.php'));
+                if(defined('VERBOSE'))
+                    print \Gluon\Libraries\General::message('notice',array('notice','verbose','added'),array(__LINE__,'../upload/cache/theme.'.$key.'.yml.php'));
         }
 
 }

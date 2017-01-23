@@ -14,58 +14,61 @@
                     <h2>Gluon Content Management System</h2>
                     <button class="startb">Get Started</button>
                 </div>
-                <div class="step">
+                <div class="step one">
                     <h2>
                         Let's setup your login
                     </h2>
                     <div class="hidden required">* required</div>
-                    <input type="text" class="username required" placeholder="USER NAME" />
+                    <input type="text" data-name="friendlyname" class="required" placeholder="YOUR NAME" />
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="text" class="email required" placeholder="EMAIL" />
+                    <input type="text" data-name="username" class="required" placeholder="USER NAME" />
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="password" class="password required" placeholder="PASSWORD" />
+                    <input type="text" data-name="email" class="required" placeholder="EMAIL" />
+                    <br />
+                    <div class="hidden required">* required</div>
+                    <input type="password" data-name="password" class="required" placeholder="PASSWORD" />
                     <br />
                     <button class="next-step">Next Step --></button>
                 </div>
-                <div class="step">
+                <div class="step two">
                     <h2>
                         Database Connection
                     </h2>
                     <div class="hidden required">* required</div>
-                    <input type="text" class="dbhost required" placeholder="HOST" />
+                    <input type="text" data-name="dbhost" class="required" placeholder="HOST" />
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="text" class="dbname required" placeholder="DATABASE" />
+                    <input type="text" data-name="dbname" class="required" placeholder="DATABASE" />
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="text" class="dbusername required" placeholder="USER NAME"/>
+                    <input type="text" data-name="dbusername" class="required" placeholder="USER NAME"/>
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="password" class="dbpassword required" placeholder="PASSWORD" />
+                    <input type="password" data-name="dbpassword" class="required" placeholder="PASSWORD" />
                     <br />
                     <button class="prev-step"><-- Prev Step</button>
                     <button class="next-step">Next Step --></button>
                 </div>
-                <div class="step">
+                <div class="step three">
                     <h2>
                         FTP Connection
                     </h2>
                     <div class="hidden required">* required</div>
-                    <input type="text" class="ftphost required" placeholder="HOST" />
+                    <input type="text" data-name="ftphost" class="required" placeholder="HOST" />
                     <br />
-                    <input type="text" class="ftpport" placeholder="PORT" />
-                    <select class="ftpprotocol">
+                    <input type="text" data-name="ftpport" class="ftpport" placeholder="PORT" />
+                    <select data-name="ftpprotocol" class="ftpprotocol">
                         <option value="ftp">FTP - File Transfer Protocol</option>
                         <option value="sftp">SFTP - SSH File Transfer Protocol</option>
                     </select>
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="text" class="ftpusername required" placeholder="USER NAME"/>
+                    <input type="text" data-name="ftpusername" class="required" placeholder="USER NAME"/>
                     <br />
                     <div class="hidden required">* required</div>
-                    <input type="password" class="ftppassword required" placeholder="PASSWORD" />
+                    <input type="password" data-name="ftppassword" class="required" placeholder="PASSWORD" />
                     <br />
                     <button class="prev-step"><-- Prev Step</button>
                     <button class="run-install">Install</button>

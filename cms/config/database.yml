@@ -1,5 +1,5 @@
 # Allowance for other database abstractions 
-class:        gl_pdoDatabase 
+class:        pdoDatabase 
 param:
   dsn:        mysql:dbname=database;host=localhost
   username: root
