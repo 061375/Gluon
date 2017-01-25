@@ -10,6 +10,12 @@
             margin: 0;
             overflow-x: hidden;
         }
+        @font-face {
+            font-family: 'gluon';
+            src: url('../../cms/_/fonts/Gluon.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
         .container {
             width: 100vw;
             overflow-x: hidden;
@@ -59,7 +65,7 @@
         }
         nav {
             left: 0;
-            width: 100px;
+            width: 120px;
             height: 95vh;
             background: #fff;
             position: absolute;
@@ -81,7 +87,7 @@
             float: right;
         }
         nav.hide {
-            left: -60px;   
+            left: -80px;   
         }
         nav ul {
             list-style: none;
@@ -89,6 +95,16 @@
         }
         nav li {
             clear: both;
+            padding: 5px;
+        }
+        nav ul li span {
+            font-family: 'gluon';
+            float: right;
+            font-size: 25px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #000;
         }
         nav img {
             float: right;
@@ -129,6 +145,7 @@
             font-size: 10px;
         }
         .hidden {display: none}
+        
     </style>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script>
@@ -150,10 +167,10 @@
                 </div>
             </div>
             <ul>
-                <li>Admin <img src="/blah.png" /></li>
-                <li>Updates <img src="/blah.png" /></li>
-                <li>Pages  <img src="/blah.png" /></li>
-                <li>Plugins  <img src="/blah.png" /></li>
+                <li><a href="/admin">Admin <span>A</span></a></li>
+                <li><a href="/updates">Updates <span>B</span></a></li>
+                <li><a href="pages">Pages  <span>C</span></a></li>
+                <li><a href="/plugins">Plugins  <span>D</span></a></li>
             </ul>
         </nav>
         <header>
