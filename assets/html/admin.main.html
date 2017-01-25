@@ -15,7 +15,7 @@
             overflow-x: hidden;
         }
         header {
-            box-shadow: 0px 0px 25px rgba(236, 235, 235, 0.38);
+            box-shadow: 0px 0px 25px #000;
             background: rgba(239, 239, 239, 0.25);
             height: 20px;
             margin: 0;
@@ -54,17 +54,17 @@
         }
         .menu_header {
             height: 33px;
-            background: rgba(234, 234, 234, 0.3);
-            box-shadow: 0px 1px 25px rgba(214, 214, 214, 0.47);
+            background: rgb(250, 250, 255);
+            box-shadow: 0px 4px 15px rgb(210, 210, 210);
         }
         nav {
             left: 0;
             width: 100px;
             height: 95vh;
-            background: rgba(243, 243, 243, 0.25);
+            background: #fff;
             position: absolute;
             top: 30px;
-            box-shadow: 0px 3px 5px #dedede;
+            box-shadow: 0px 3px 5px rgb(130, 130, 130);
             transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
         }
         nav .menu_header {
@@ -83,14 +83,24 @@
         nav.hide {
             left: -60px;   
         }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav li {
+            clear: both;
+        }
+        nav img {
+            float: right;
+        }
         aside {
             width: 250px;
             width: 25vw;
             height: 95vh;
-            background: rgba(243, 243, 243, 0.09);
+            background: #fff;
             position: absolute;
             right: 0px;
-            box-shadow: 0px 3px 5px rgba(222, 222, 222, 0.39);
+            box-shadow: 0px 3px 5px rgb(130, 130, 130);
             transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
         }
         aside .menu_header {
@@ -118,6 +128,7 @@
             padding: 3px;
             font-size: 10px;
         }
+        .hidden {display: none}
     </style>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script>
@@ -135,9 +146,15 @@
         <nav class="hide">
             <div class="menu_header">
                 <div class="button nav">
-                    <div class="arrow"></div>   
+                    <div class="arrow"></div>
                 </div>
             </div>
+            <ul>
+                <li>Admin <img src="/blah.png" /></li>
+                <li>Updates <img src="/blah.png" /></li>
+                <li>Pages  <img src="/blah.png" /></li>
+                <li>Plugins  <img src="/blah.png" /></li>
+            </ul>
         </nav>
         <header>
             <div class="left">
