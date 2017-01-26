@@ -5,6 +5,8 @@ include_once('src/core.php');
 $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 defined('CURRENT_URL') or define('CURRENT_URL',$url);
 
+define('ROOT',getcwd());
+
 // get version and check if installed
 $v = json_decode(@file_get_contents('v/.version'));
 

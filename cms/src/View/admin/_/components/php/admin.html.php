@@ -20,7 +20,7 @@
             </nav>
             <header>
                 <div class="left">
-                    <img src="../svg/logo.svg" class="logo" />
+                    <img src="/cms/_/svg/logo.svg" class="logo" />
                     Gluon Content Management System
                 </div>
                 <div class="right">
@@ -34,10 +34,10 @@
                     </h2>
                     <div class="clear">
                         <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
                         </div>
                         <div class="status">
-                            UPDATED
+                            DELETED
                         </div>
                         <div class="date">
                             Jan 25, 2017 5:31:23 
@@ -65,7 +65,17 @@
                             Jan 25, 2017 5:31:23 
                         </div>
                     </div>
-    
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
                     <div class="clear">
                         <div class="title">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
@@ -77,6 +87,88 @@
                             Jan 25, 2017 5:31:23 
                         </div>
                     </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
+                        </div>
+                        <div class="status">
+                            UPDATED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                    <div class="clear">
+                        <div class="title">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
+                        </div>
+                        <div class="status">
+                            UPLOADED
+                        </div>
+                        <div class="date">
+                            Jan 25, 2017 5:31:23 
+                        </div>
+                    </div>
+                </section>
+                <section class="analytics">
+                    <h2>
+                        Analytics
+                    </h2>  
                 </section>
             </div>
             <aside class="hide">

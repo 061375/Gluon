@@ -21,6 +21,12 @@ class Render
         }
         die($t);
     }
+    /**
+     * renders a script file with MIME-TYPE header
+     * @param string $s
+     * @param string $mime a mime type ex 'text/css'
+     * @return void
+     * */
     public static function _script($s,$mime) {
         header($mime);
         die($s);

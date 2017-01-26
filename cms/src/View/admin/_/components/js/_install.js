@@ -2,9 +2,7 @@
  *
  * Install
  * 
- * @author Jeremy Heminger  <j.heminger@061375.com>
- *
- *
+ * @author Jeremy Heminger <j.heminger@061375.com>
  * @requires Ajax to setup a session and to send the install
  * 
  * */

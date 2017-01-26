@@ -13,6 +13,13 @@ This is meant to be a simple project for my own learning purposes, but I think i
 
 ### History
 
+1.0.11 - setup the Core for the administrator
+* added .htaccess to convert folders to class and method calls
+* added a Scripts class to the Controller namespace - this renders the scripts and css from the cache
+* modified the Render class in the view to assist the Scripts class
+* more re-arranging things and debugging
+* the installation process now appears to work fully
+
 1.0.10 - If the Gluon core is in the Gluon namespace then what's with all the prefixes..."old habits", so I reorganized things.
 * further building and debugging the install process
 * added the Encrypt class for storing passwords

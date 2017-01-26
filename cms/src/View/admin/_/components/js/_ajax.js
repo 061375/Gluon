@@ -1,7 +1,7 @@
 /**
  *
  * Ajax Handler
- * @author Jeremy Heminger : c/o Geographics j.heminger@061375.com
+ * @author Jeremy Heminger <j.heminger@061375.com>
  *
  * 
  * */

@@ -232,12 +232,15 @@ class Cache
                     // gather and build scripts
                     $build['js'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($js as $j) {
-                        $build['js'] .= '<script src="'.str_replace(getcwd().'/','',$j).'?c='.$now.'"></script>'."\n";
+                        //$build['js'] .= '<script src="'.str_replace(getcwd().'/','',$j).'?c='.$now.'"></script>'."\n";
+						$build['js'] .= '<script src="'.WEBROOT.'/cms/scripts/js/'.str_replace(getcwd().'/','',$j).'"></script>'."\n";
+						
                     }
                     // gather and build css
                     $build['css'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($css as $c) {
-                        $build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd().'/','',$c).'?c='.$now.'"/>'."\n";
+                        //$build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd().'/','',$c).'?c='.$now.'"/>'."\n";
+						$build['css'] .= '<link rel="stylesheet" href="'.WEBROOT.'/cms/scripts/css/'.str_replace(getcwd().'/','',$c).'"/>'."\n";
                     }
     /* ELSE */  }else{
                     // gather ,minify, then build scripts

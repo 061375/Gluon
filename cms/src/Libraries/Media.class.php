@@ -1,5 +1,7 @@
 <?php
 namespace Gluon\Libraries;
+use Gluon\Libraries\Cache;
+use Gluon\Libraries\General;
 /**
  *  
  *  Media
@@ -22,7 +24,7 @@ class Media {
 	 * */
     function __construct($error_handler)
     {
-        $this->config['media'] = \Gluon\Libraries\Cache::get_cache_byfile('app.yml.php');
+        $this->config['media'] = Cache::get_cache_byfile('app.yml.php');
         $this->errors = $error_handler;
     }
     /**
@@ -43,9 +45,9 @@ class Media {
                     $files[$i]['tmp_name'] = $_FILES['files']['tmp_name'][$i];
                     $files[$i]['error'] = null;
                     if($files[$i]['size'] > $this->config['file_size_limit'])
-                        $files[$i]['error'] = \Gluon\Libraries\General::message('error',array('error','upload','sizemax'));
+                        $files[$i]['error'] = General::message('error',array('error','upload','sizemax'));
                     if(!in_array($files[$i]['type'],$this->config['allowed_mimetypes']))
-                        $files[$i]['error'] = \Gluon\Libraries\General::message('error',array('error','upload','notallowed'));
+                        $files[$i]['error'] = General::message('error',array('error','upload','notallowed'));
             }
             
             foreach($files as $file){
@@ -75,10 +77,10 @@ class Media {
         }
         $move = move_uploaded_file($file['tmp_name'], $path . $file['save_name']);
         if(false === $move) {
-            $this->errors->set_error_message(\Gluon\Libraries\General::message('error',array('error','upload','movefile')));
+            $this->errors->set_error_message(General::message('error',array('error','upload','movefile')));
             return false;
         }
-        return \Gluon\Libraries\General::message('notice',array('notice','success','upload'));
+        return General::message('notice',array('notice','success','upload'));
     }
     /**
      * checks if file exists and does a simple check to ensure the file doesn't contain any PHP
@@ -89,14 +91,14 @@ class Media {
      * */
     private function checkFile($file_path) {
         if(false == file_exists($file_path)) {
-            $this->errors->set_error_message(\Gluon\Libraries\General::message('notice',array('error','upload','upload')));
+            $this->errors->set_error_message(General::message('notice',array('error','upload','upload')));
             return false;
         }
         // rethink this - there are better ways
         // - resize image for example
         $test = file_get_contents($file_path);
         if(strpos($test,'<?php') !== false) {
-            $this->errors->set_error_message(\Gluon\Libraries\General::message('notice',array('error','upload','malicious')));
+            $this->errors->set_error_message(General::message('notice',array('error','upload','malicious')));
             return false;
         }
         return true;

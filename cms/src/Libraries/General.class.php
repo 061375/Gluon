@@ -30,7 +30,7 @@ class General
         $return = isset($GET[$key]) ? $GET[$key] : $else;
 	if(false !== $uri) {
 	    if(false == is_string($return))return $else;
-	    if(strpos($return,'/') === false)return $return;
+	    if(strpos($return,'/') === false)return array($return);
 	    return explode('/',$return);
 	}
 	return $return;
