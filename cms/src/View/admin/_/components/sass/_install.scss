@@ -1,102 +1,125 @@
-.container {
-    transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
-    width: 100vw;
-    max-width: 320px;
-    position: relative;
-    margin: 20vh auto;
-    perspective: 1000px;
-    opacity: 1;
-    &.fadeout {
-        max-width: 90vw;
-        opacity: 0;
-        .box {
-            height: 320px;
+.install {
+    .container {
+        transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
+        width: 100vw;
+        max-width: 320px;
+        position: relative;
+        margin: 20vh auto;
+        perspective: 1000px;
+        opacity: 1;
+        &.fadeout {
+            max-width: 90vw;
+            opacity: 0;
+            .box {
+                height: 320px;
+            }
+            img {
+                height: 320px;
+                width: 320px;
+            }
+        }
+    }
+    .box {
+        transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
+        width: 100%;
+        position: absolute;
+        box-sizing: border-box;
+        animation: flyin .5s normal forwards ease-in-out;
+        padding: 10px;
+        text-align: center;
+        border: solid 1px #d8d8d8;
+        border-radius: 5px;
+        transform: rotateX(30deg);
+        &.install {
+            transform: rotateX(0deg);    
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 0.67em 0 0.67em 0;
+            display: block;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0.83em 0 0.83em 0;
+            display: block;
         }
         img {
-            height: 320px;
-            width: 320px;
+            width: 100%;
         }
-    }
-}
-.box {
-    transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
-    width: 100%;
-    position: absolute;
-    box-sizing: border-box;
-    animation: flyin .5s normal forwards ease-in-out;
-    padding: 10px;
-    text-align: center;
-    border: solid 1px #d8d8d8;
-    border-radius: 5px;
-    transform: rotateX(30deg);
-    &.install {
-        transform: rotateX(0deg);    
-    }
-    h2 {
-        text-align: center;
-    }
-    img {
-        width: 100%;
-    }
-    button {
-        float: right;
-        background: rgb(255,255,255); /* Old browsers */
-        background: -moz-linear-gradient(top,  rgba(255,255,255,1) 51%, rgba(198,198,198,1) 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
-        border-radius: 5px;
-        border: solid 1px #d8d8d8;
-        cursor: pointer;
-        @include prefix((
-           user-select: none
-        ), webkit moz o );
-    }
-    input {
-        width: 100%;
-        margin: 0 0 5px 0;
-        &.required {
-            color: #000;
+        button {
+            float: right;
+            background: rgb(255,255,255); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(255,255,255,1) 51%, rgba(198,198,198,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom,  rgba(255,255,255,1) 51%,rgba(198,198,198,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
+            border-radius: 5px;
+            border: solid 1px #d8d8d8;
+            cursor: pointer;
+            @include prefix((
+               user-select: none
+            ), webkit moz o );
         }
-    }
-    &.start {
-        transform: rotateX(0deg);
-        box-shadow: 0px 0px 50px #7d7d7d;
-    }
-    &.startb {
-        transform: rotateY(360deg);
-    }
-    .startb {
-        float: none;
-    }
-    .step {
-        display: none;
-    }
-    .stepone {
-        display: block;
-    }
-    .running {
-        display: none;
-        text-align: center;
-    }
-    .prev-step {
-        float: left;
-    }
-    .ftpport {
-        width: 60px !important;
-    }
-    .install-pro {
-        width: 100%;
-        height: 150px;
-        overflow-y: auto;
-        text-align: left;
-    }
-    .spinup {
-        animation: spinup 3s infinite linear;
-    }
-    .required {
-        color: #ff0000;
-        text-align: left;
+        input {
+            width: 100%;
+            margin: 0 0 5px 0;
+            &.required {
+                color: #000;
+            }
+        }
+        input[type=checkbox] {
+            width: 10%;
+            float: left;
+        }
+        .ftpskip {
+            width: 90%;
+            float: left;
+            font-size: 10px;
+            text-align: left;
+        }
+        &.start {
+            transform: rotateX(0deg);
+            box-shadow: 0px 0px 50px #7d7d7d;
+        }
+        &.startb {
+            transform: rotateY(360deg);
+        }
+        .startb {
+            float: none;
+        }
+        .step {
+            display: none;
+        }
+        .stepone {
+            display: block;
+        }
+        .running {
+            display: none;
+            text-align: center;
+        }
+        .prev-step {
+            float: left;
+        }
+        .ftpport {
+            width: 60px !important;
+        }
+        .install-pro {
+            width: 100%;
+            height: 150px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .spinup {
+            animation: spinup 3s infinite linear;
+        }
+        .required {
+            color: #ff0000;
+            text-align: left;
+        }
     }
 }
 @include keyframes(flyin) {

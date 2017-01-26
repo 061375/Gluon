@@ -17,16 +17,23 @@ class General
 	 * get a clean query string key
 	 * @param string $key
 	 * @param string
+	 * @param bool
 	 * @return string
 	 * */
-    public static function get_variable($key,$else='')
+    public static function get_variable($key,$else='',$uri = false)
     {
         if(false == defined("GET_STRING")){
             parse_str(($_SERVER['QUERY_STRING'] ? $_SERVER['QUERY_STRING'] : ''), $_GET);
             define("GET_STRING",true);
         }
-		$GET = self::cleanSuperGlobal($_GET,'clean_get');
-        return isset($GET[$key]) ? $GET[$key] : $else;
+	$GET = self::cleanSuperGlobal($_GET,'clean_get');
+        $return = isset($GET[$key]) ? $GET[$key] : $else;
+	if(false !== $uri) {
+	    if(false == is_string($return))return $else;
+	    if(strpos($return,'/') === false)return $return;
+	    return explode('/',$return);
+	}
+	return $return;
     }
 	/**
      * clean super globals
@@ -270,5 +277,46 @@ class General
 			}
 		}
 		return $default;
+    }
+    /**
+     * @param string $url
+     * @param array $post
+     * @param bool $code
+     * @param array $header
+     * @return string
+     * */
+    public static function simpleCurl($url,$post,$code = false,$header = array('Expect:'))
+    {
+	$postValuesString = '';
+        foreach($post as $var => $val) {
+	    if(is_array($val)) {
+		foreach($val as $k => $v) {
+		    if(strlen($postValuesString))$postValuesString.= "&";
+		    $postValuesString.= $var . "[".$k."]=" . urlencode($v);   
+		}
+	    }else{
+		if(strlen($postValuesString))$postValuesString.= "&";
+		$postValuesString.= $var . "=" . urlencode($val);
+	    }
+	}
+
+	$ch = curl_init(); 
+	// set url 
+	curl_setopt($ch, CURLOPT_URL, $url); 
+
+	//return the transfer as a string 
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+	curl_setopt($ch, CURLOPT_POST,1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS,$postValuesString);
+	curl_setopt($ch, CURLOPT_HTTPHEADER,$header);
+	// $output contains the output string 
+	$output = curl_exec($ch);
+	if (true === $code) {
+	    return curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	}
+	// close curl resource to free up system resources 
+	curl_close($ch);
+            
+        return $output;
     }
 }

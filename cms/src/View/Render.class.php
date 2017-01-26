@@ -21,4 +21,8 @@ class Render
         }
         die($t);
     }
+    public static function _script($s,$mime) {
+        header($mime);
+        die($s);
+    }
 }

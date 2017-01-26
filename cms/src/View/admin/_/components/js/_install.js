@@ -22,8 +22,9 @@ var Install = (function() {
     
     var run_install = $('.run-install'); 
     
-    var id, i;
+    var id, i, $last;
     
+    var install_er = false;
     /**
     * creates a session
     * @returns {Void}
@@ -108,7 +109,18 @@ var Install = (function() {
     * @returns {Void}
     * */
     var runinstall = function() {
-        var err = false;
+        
+        // init
+                // reset 
+                $('.running .prev-step').css('display','none');
+                install_er = false;
+                $('.install-pro').html('');
+                //./reset
+            var err = false;
+            i = 0;
+            $last = $(this).parent();
+        //./init
+        
         $('input').each(function(){
             if($(this).hasClass('required') && $(this).val() == ''){
                 err = true;
@@ -117,10 +129,12 @@ var Install = (function() {
                 $(this).prev().css('display','none');
             }
         });
+        
         if (err) return false;
-        i = 0;
-        //$(this).parent().fadeOut("fast",function(){
-            //$('.running').fadeIn("fast",function(){
+        
+        // fade out input and the run-it
+        $last.fadeOut("fast",function(){
+            $('.running').fadeIn("fast",function(){
                 $.logThis('Likes::runinstall');
                 var d = getData($('.step.two'));
                 runAjax('Checking database connection...',
@@ -128,7 +142,7 @@ var Install = (function() {
                         d,function(){
                     d = getData($('.step.three'));
                     runAjax('Testing FTP connection...',
-                        'test_ftp',
+                        'add_ftp',
                         d,function(){
                         d = getData($('.step.one'));
                         runAjax('Adding admin user...',
@@ -137,21 +151,36 @@ var Install = (function() {
                             runAjax('Finalizing Install...',
                             'finalize',
                             d,function(){
-                                setTimeout(function(){
+                                // redirect to admin
+                                if (!install_er) {
                                     $('.container').addClass('fadeout');
-                                    // redirect to admin
-                                },2000);
-                            });
-                        });    
-                    });       
-                });
-            //});
-        //});
+                                    window.location = "admin";
+                                }else{
+                                    alert('one or more errors occured during the install');
+                                }
+                            },installError);
+                        },installError);    
+                    },installError);       
+                },installError);
+            });
+        });
+    }
+    var installError = function(m) {
+        install_er = true;
+        var d = document.createElement('div');
+            $(d).css('color','red');
+            $(d).html(m);
+        $('.install-pro').append(d);
+        $('.running .prev-step').fadeIn("fast");
     }
     var getData = function($t) {
         var r = {};
         var data = $t.find('input,select').each(function(){
-            r[$(this).data('name')] = $(this).val();            
+            if ($(this).attr("type") == 'checkbox') {
+                r[$(this).data('name')] = $(this).is(':checked');
+            }else{
+                r[$(this).data('name')] = $(this).val();
+            }
         });
         return r;
     }
@@ -167,11 +196,7 @@ var Install = (function() {
             $('.install-pro').append(d);
             callback();
         },function(error){
-            var d = document.createElement('div');
-                $(d).css('color','red');
-                $(d).html(error);
-            $('.install-pro').append(d);
-            callback();
+            installError(error);
         });   
     }
     /**

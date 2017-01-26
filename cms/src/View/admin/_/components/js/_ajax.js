@@ -59,6 +59,8 @@ var Ajax = (function() {
                     }else{
                         alert("An error occured "+errors);
                     }
+                }else{
+                    ecallback(data.message);
                 }
             } 
         });

@@ -1,6 +1,9 @@
 # by default Gluon follows PSR-4 folder suggestions
 # but you can specify another folder to attempt to autoload your own code
 src_alt:
+# if specified when cache is cleard this path with be taken into account
+# this is generally for when the project is not the base like http://localhost/folder/Gluon/cms
+webroot:
 error_handler: ErrorHandler
 jquery: _/components/jquery/jquery-3.1.1.min.js
 # if true then:

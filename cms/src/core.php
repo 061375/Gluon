@@ -1,5 +1,7 @@
 <?php
 namespace Gluon;
+// include Symfony components as necessary
+use Symfony\Component\Yaml\Yaml;
 /**
  *  
  *  Gluon
@@ -46,6 +48,55 @@ namespace Gluon;
  * */
 class Core {
     
+    public static function autoload() {
+        // autoload
+        include('cache/classes.yml.php');
+        foreach($return as $class) {
+            require_once($class);
+        }
+    }
+    /**
+     * @return void
+     * */
+    public static function ajax() {
+           
+    }
+    /**
+     * @param mixed $a
+     * @return void
+     * */
+    public static function run($a) {
+        // logic
+        // admin/blah/a/b/c
+        /*
+         * class Admin {
+            function blah($param) {
+                $param[0] = 'a'
+                $param[1] = 'b'
+                $param[2] = 'c'
+                ...
+                ...
+            }
+           }
+        */
+
+        if(!isset($a[1]) OR trim($a[1]) == '')$a[1] = 'index';
+
+        if(method_exists("\Gluon\Controller\\".$a[0],$a[1])) {
+            $m = "\Gluon\Controller\\".$a[0];
+            $m = new $m();
+            $m->$a[1]($a);
+        }else{
+            /**
+             * @todo this should check for plugins then fall off to pages
+             * */
+            
+            
+            // check if this is a simple page within the admin
+            // via sql
+            die('NOT METHOD EXISTS');
+        }
+    }
     /**
      *  @todo this could be added to a class with a remap type operation
      *  @return void
@@ -55,13 +106,9 @@ class Core {
         // verbose any errors experienced during an installation
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
-
-        // autoload
-        include('cache/classes.yml.php');
-        foreach($return as $class) {
-            require_once($class);
-        }
         
+        require_once('src/Libraries/ErrorHandler.class.php');
+        require_once('src/Libraries/Cache.class.php');
         // init classes
         $error = new \Gluon\Libraries\ErrorHandler;
         $cache = new \Gluon\Libraries\Cache($error);
@@ -74,12 +121,29 @@ class Core {
             define('GLUON_RUN_INSTALL',true);
             include('update.php');
             
+            // autoload
+            include('cache/classes.yml.php');
+            foreach($return as $class) {
+                require_once($class);
+            }
+            
             $install_template = \Gluon\Libraries\Cache::get_cache_byfile('admintheme.admin.yml.php',array('install.html.php'));
             \Gluon\View\Render::_echo($install_template,array('page.title'=>'Welcome to Gluon!'));
         }else{
+            // autoload
+            include('cache/classes.yml.php');
+            foreach($return as $class) {
+                require_once($class);
+            }
             switch($_POST['method'])
             {
                 case 'install_database':
+                    $_POST['method'] = 'test_database';
+                    $result = \Gluon\Libraries\General::simpleCurl(CURRENT_URL,$_POST,false);
+                    if(200 != $result) {
+                        echo json_encode(array('success' => 0,'message'=>'Database connection failed'));
+                        die();   
+                    }
                     $conn = array('mysql:host='.$_POST['data']['dbhost'].';dbname='.$_POST['data']['dbname'],
                                   $_POST['data']['dbusername'],
                                   $_POST['data']['dbpassword']);
@@ -97,10 +161,20 @@ class Core {
                     $dsn['param']['password'] = $_POST['data']['dbpassword'];
                     @file_put_contents('config/database.yml',Yaml::dump($dsn));
                     
-                    \Gluon\General::set_session(array('database'),$_POST);
+                    \Gluon\Libraries\General::set_session('database',$_POST);
                     
                     break;
+                case 'test_database':
+                    $conn = array('mysql:host='.$_POST['data']['dbhost'].';dbname='.$_POST['data']['dbname'],
+                                  $_POST['data']['dbusername'],
+                                  $_POST['data']['dbpassword']);
+                    $db = new \Gluon\Libraries\pdoDatabase(new \Gluon\Libraries\ErrorHandler(),array(),false,0);
+                    $db->connect($conn);
+                    die('200');
+                    break;
                 case 'test_ftp':
+                    if($_POST['data']['ftpskip'] == true)die('200');
+                    
                     if($_POST['data']['ftpprotocol'] == 'ftp') {
                         if('' == trim($_POST['data']['ftpport']))$_POST['data']['ftpport'] = 21;
                         $con = ftp_connect($_POST['data']['ftphost'],$_POST['data']['ftpport']);
@@ -115,6 +189,14 @@ class Core {
                          * 
                          * */
                     }
+                    die('200');
+                    break;
+                case 'add_ftp':
+                    $_POST['method'] = 'test_ftp';
+                    if(200 != \Gluon\Libraries\General::simpleCurl(CURRENT_URL,$_POST,false)) {
+                        echo json_encode(array('success' => 0,'message'=>'FTP connection failed'));
+                        die();   
+                    }
                     // success ... then update app.yml
                     // update the database.yml file
                     $conn = Yaml::parse(@file_get_contents('config/connect.yml'));
@@ -126,13 +208,13 @@ class Core {
                     @file_put_contents('config/connect.yml',Yaml::dump($conn));
                     break;
                 case 'add_user':
-                    $data = \Gluon\General::post_variable('data',false);
+                    $data = \Gluon\Libraries\General::post_variable('data',false);
                     if(false === $data) {
                         // set error
                         // die
                     }
                     $enc = new \Gluon\Libraries\Encrypt();
-                    $conn = \Gluon\General::get_session(array('database'));
+                    $conn = \Gluon\Libraries\General::get_session('database');
                     $conn = array('mysql:host='.$conn['data']['dbhost'].';dbname='.$conn['data']['dbname'],
                                   $conn['data']['dbusername'],
                                   $conn['data']['dbpassword']);
@@ -142,13 +224,13 @@ class Core {
                         (`username`,`usernice`,`password`,`permissions`,`date_created`)
                     VALUES
                         (:username,:usernice,:password,:permissions,:date_created)";
-                    $pass = $enc->encrypt($pass,true,true);
+                    $pass = $enc->encrypt($data['password'],true,true);
                     $db->Query($sql,array(
                         'username'    =>$data['username'],
-                        'usernice'    =>$data['usernice'],
-                        'password'    =>$data['password'],
-                        'permissions' =>$data['permissions'],
-                        'date_created'=>$data['date_created']
+                        'usernice'    =>'',
+                        'password'    =>$pass,
+                        'permissions' =>1,
+                        'date_created'=>date('Y-m-d H:i:s',strtotime('now'))
                     ));
                     break;
                 case 'finalize':

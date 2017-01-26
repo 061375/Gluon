@@ -1,7 +1,6 @@
 connect:
-    host:
-    protocol:
-    port:
-    username:
-    password:
-    
+    host: dfghfgdhf
+    protocol: ftp
+    port: ''
+    username: fghfhg
+    password: fghfgh

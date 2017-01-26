@@ -118,6 +118,8 @@ function gluon_clear_cache() {
             // parse and deal with the application config file
             $app = Yaml::parse(file_get_contents($app_path));
             
+            define('WEBROOT',$app['webroot']);
+            
             // if an alt src folder is specified
             if(isset($app['src_alt']) AND '' != trim($app['src_alt'])) {
                 
