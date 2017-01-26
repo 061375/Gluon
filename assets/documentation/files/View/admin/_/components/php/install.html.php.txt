@@ -2,7 +2,7 @@
     <head>
         <?php include('head.php'); ?>
     </head>
-    <body>
+    <body class="install">
         <div class="container">
             <div class="box">
                 <img src="_/svg/logo.svg" class="logo" />
@@ -70,6 +70,8 @@
                     <div class="hidden required">* required</div>
                     <input type="password" data-name="ftppassword" class="required" placeholder="PASSWORD" />
                     <br />
+                    <input type="checkbox" data-name="ftpskip" class="fltleft"/> <div class="ftpskip">Do not install FTP at this time</div>
+                    <br />
                     <button class="prev-step"><-- Prev Step</button>
                     <button class="run-install">Install</button>
                 </div>
@@ -78,6 +80,7 @@
                         Please wait...
                     </h2>
                     <div class="install-pro"></div>
+                    <button class="prev-step hidden"><-- Prev Step</button>
                 </div>
             </div>
         </div>

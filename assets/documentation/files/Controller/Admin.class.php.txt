@@ -1,0 +1,22 @@
+<?php
+namespace Gluon\Controller;
+use Gluon\Libraries\Cache;
+use Gluon\View\Render;
+/**
+ *  
+ *  Admin
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2017 
+ *
+ * */
+class admin {
+    /**
+     * @param array
+     * @return void
+     * */
+    function index($a)
+    {
+        $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('admin.html.php'));
+        Render::_echo($install_template,array('page.title'=>'Welcome to Gluon Admin!'));
+    }
+}

@@ -3,14 +3,12 @@ namespace Gluon\Libraries;
 /**
  *  
  *  General
- *
+ *  
  *  This represents a list of general methods I have gathered over the years that I find useful...some more than others
  *  some are outright depricated or just plain wrong...I remove stuff from time-to-time
  *  
- *  By Jeremy Heminger
- *  j.heminger13@gmail.com
- *  © 2013 to present 
- *
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2013 to present 
  *
  * */
 class General
@@ -19,16 +17,23 @@ class General
 	 * get a clean query string key
 	 * @param string $key
 	 * @param string
+	 * @param bool
 	 * @return string
 	 * */
-    public static function get_variable($key,$else='')
+    public static function get_variable($key,$else='',$uri = false)
     {
         if(false == defined("GET_STRING")){
             parse_str(($_SERVER['QUERY_STRING'] ? $_SERVER['QUERY_STRING'] : ''), $_GET);
             define("GET_STRING",true);
         }
-		$GET = self::cleanSuperGlobal($_GET,'clean_get');
-        return isset($GET[$key]) ? $GET[$key] : $else;
+	$GET = self::cleanSuperGlobal($_GET,'clean_get');
+        $return = isset($GET[$key]) ? $GET[$key] : $else;
+	if(false !== $uri) {
+	    if(false == is_string($return))return $else;
+	    if(strpos($return,'/') === false)return array($return);
+	    return explode('/',$return);
+	}
+	return $return;
     }
 	/**
      * clean super globals
@@ -136,7 +141,7 @@ class General
     /**
      * recursively finds a set key in the super global $_SESSION
      * NOTE: *** this could be reworked to use self::recurse_array_get to allow larger arrays
-     * @param string $key
+     * @param array $key
      * @param string $else
      * @return mixed
      *  */
@@ -166,7 +171,7 @@ class General
     /**
      * set a session at key [x][y][z]
      * NOTE: *** this might be made to allow recurse_array_get (similar)
-     * @param string $key
+     * @param array $key
      * @param string $value the value to add to the array
      * @return void
      *  */
@@ -216,7 +221,7 @@ class General
     /**
      * converts an object into a simple array
      * @param object $obj
-     * return array $arr
+     * return array
      *  */
     public function simpleObjectToArray($obj = null) {
         if(empty($obj))return;
@@ -272,5 +277,46 @@ class General
 			}
 		}
 		return $default;
+    }
+    /**
+     * @param string $url
+     * @param array $post
+     * @param bool $code
+     * @param array $header
+     * @return string
+     * */
+    public static function simpleCurl($url,$post,$code = false,$header = array('Expect:'))
+    {
+	$postValuesString = '';
+        foreach($post as $var => $val) {
+	    if(is_array($val)) {
+		foreach($val as $k => $v) {
+		    if(strlen($postValuesString))$postValuesString.= "&";
+		    $postValuesString.= $var . "[".$k."]=" . urlencode($v);   
+		}
+	    }else{
+		if(strlen($postValuesString))$postValuesString.= "&";
+		$postValuesString.= $var . "=" . urlencode($val);
+	    }
+	}
+
+	$ch = curl_init(); 
+	// set url 
+	curl_setopt($ch, CURLOPT_URL, $url); 
+
+	//return the transfer as a string 
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+	curl_setopt($ch, CURLOPT_POST,1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS,$postValuesString);
+	curl_setopt($ch, CURLOPT_HTTPHEADER,$header);
+	// $output contains the output string 
+	$output = curl_exec($ch);
+	if (true === $code) {
+	    return curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	}
+	// close curl resource to free up system resources 
+	curl_close($ch);
+            
+        return $output;
     }
 }

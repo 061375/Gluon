@@ -3,16 +3,15 @@ namespace Gluon\Libraries;
 /**
  *  
  *  ErrorHandler
- * 
- *  By Jeremy Heminger
- *  j.heminger13@gmail.com
- *  © 2013 to present 
- *
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2013 to present 
  *
  * */
 class ErrorHandler
 {
+	
 	private $errors;
+	
 	
     /**
      * Get Error messages

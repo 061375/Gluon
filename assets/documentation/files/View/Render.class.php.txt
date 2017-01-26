@@ -1,6 +1,12 @@
 <?php
 namespace Gluon\View;
-
+/**
+ *  
+ *  Render
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2017 
+ *
+ * */
 class Render
 {
     /**
@@ -14,5 +20,15 @@ class Render
             $t = str_replace('[#'.$key.'#]',$value,$t);
         }
         die($t);
+    }
+    /**
+     * renders a script file with MIME-TYPE header
+     * @param string $s
+     * @param string $mime a mime type ex 'text/css'
+     * @return void
+     * */
+    public static function _script($s,$mime) {
+        header($mime);
+        die($s);
     }
 }

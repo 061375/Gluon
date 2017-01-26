@@ -3,26 +3,29 @@ namespace Gluon\Libraries;
 /**
  *  
  *  Encrypt
- *  
- *  By Jeremy Heminger
- *  j.heminger13@gmail.com
- *  © 2016 
- *
+ *  @author By Jeremy Heminger <j.heminger@061375.com>
+ *  @copyright © 2016 
  *
  * */
 class Encrypt
 {
-    //
-    
-    //
+
     private $lt = false;
-    //
+    
+	// ---
+	
     private $salt = false;
-    //
+    
+	// ---
+	
     private $bpos = 4;
-    //
+    
+	// ---
+	
     private $lpos = 8;
-    //
+    
+	// ---
+	
     
     function __construct() {
         
@@ -84,7 +87,7 @@ class Encrypt
      *  encrypt
      *  @param string $p the password to be encrypted
      *  @param string $s the salt
-     *  @param boolean $c compress the ourput?
+     *  @param boolean $c compress the output?
      *  @return string
      *
      * */
