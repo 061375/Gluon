@@ -56,12 +56,6 @@ class Core {
         }
     }
     /**
-     * @return void
-     * */
-    public static function ajax() {
-           
-    }
-    /**
      * @param mixed $a
      * @return void
      * */
@@ -86,6 +80,9 @@ class Core {
             $m = "\Gluon\Controller\\".$a[0];
             $m = new $m();
             $m->$a[1]($a);
+            if(true === \Gluon\Libraries\ErrorHandler::has_errors()) {
+                \Gluon\Libraries\ErrorHandler::display_errors(true);
+            }
         }else{
             /**
              * @todo this should check for plugins then fall off to pages
@@ -94,8 +91,46 @@ class Core {
             
             // check if this is a simple page within the admin
             // via sql
-            die('NOT METHOD EXISTS');
+            
+            /**
+             *  @todo if no page found this should pass to a 404 page
+             *  */
+            die('METHOD DOES NOT EXIST');
         }
+    }
+    /**
+     * @return void
+     * */
+    public static function ajax($a) {
+        // logic
+        // ajax/blah/a/b/c
+        /*
+         * class Admin {
+            function blah($param) {
+                $param[0] = 'a'
+                $param[1] = 'b'
+                $param[2] = 'c'
+                ...
+                ...
+            }
+           }
+        */
+        /**
+         * @todo this should check against the login. the URL should contain a hash from the database based on IP
+         * */
+        if(method_exists("\Gluon\Controller\\".$a[0],$a[1])) {
+            $m = "\Gluon\Controller\\".$a[0];
+            $m = new $m();
+            $result = $m->$a[1]($a);
+            if(true === \Gluon\Libraries\ErrorHandler::has_errors()) {
+                \Gluon\Libraries\ErrorHandler::display_errors();
+            }else{
+                \Gluon\View\Render::ajax($result);
+            }
+        }else{
+            \Gluon\Libraries\ErrorHandler::set_error_handler('method does not exist');
+            \Gluon\Libraries\ErrorHandler::display_errors();
+        }   
     }
     /**
      *  @todo this could be added to a class with a remap type operation

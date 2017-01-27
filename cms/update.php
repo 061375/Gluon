@@ -43,13 +43,13 @@ switch($task)
     case '-p':
         if(false === $option)
             die("\nplease provide a user to assign to the updatable folders\n");
-        shell_exec('chown -R '.$option.':'.$option.' ../Gluon');
+        shell_exec('chown -R '.$option.':'.$option.' ../../Gluon');
         shell_exec('chown -R '.$option.':'.$option.' cache');
         shell_exec('chown -R '.$option.':'.$option.' v');
         shell_exec('chown -R '.$option.':'.$option.' config');
         shell_exec('chown -R '.$option.':'.$option.' ../upload/cache');
         //
-        shell_exec('chmod -R 755 ../Gluon');
+        shell_exec('chmod -R 755 ../../Gluon');
         shell_exec('chmod -R 777 cache');
         shell_exec('chmod -R 777 v');
         shell_exec('chmod -R 777 config');
@@ -109,7 +109,6 @@ function gluon_clear_cache() {
         
         // get all files in the src folder
         $src = $cache->recurse_get_files(getcwd().'/src','.class.php');
-        
         // create the cache for the src folder 
         if(false === $cache->put_classes($src,$classes_path))
             $error->display_errors(true,true);

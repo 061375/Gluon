@@ -74,6 +74,7 @@ class ErrorHandler
     {
         $this->errors = $this->get_error_message();
         if (false === $echo) {
+				header('application/json');
                 $result = array(
                         'success' => 0,
                         'errors' => $this->errors

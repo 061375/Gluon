@@ -3,3 +3,5 @@ description: The admin theme
 author: Jeremy Heminger
 core: 1.x
 type: admintheme
+jqueryui: _/components/jquery/jquery-ui.min.js
+jqueryui-css: ['_/components/jquery/css/jquery-ui.theme.min.css','_/components/jquery/css/jquery-ui.structure.min.css']

@@ -68,7 +68,7 @@ class Cache
         $Iterator = new \RecursiveIteratorIterator($Directory);
         $objects = new \RegexIterator($Iterator, '/^.+\\'.$ext.'$/i', \RecursiveRegexIterator::GET_MATCH);
         foreach($objects as $name => $object){
-            $return[] = $name;
+            $return[str_replace('.html.php','',basename($name))] = $name;
         }
         return $return;
     }
@@ -80,6 +80,7 @@ class Cache
      * */
     public function put_classes($src,$path)
     {
+		
         if(false == file_exists($path)) {
             $error[__LINE__.' '.$path] = @file_put_contents($path,$this->header);
             $error[__LINE__.' '.$path] = @file_put_contents($path,'$return = array(',FILE_APPEND);
@@ -199,32 +200,44 @@ class Cache
 		
 		$jquery = General::is_set($app,'jquery',false);
         $now = date('dis',strtotime('now'));
-        
-        // loop all themes
+
+        // loop all theme types
         foreach($theme_yml as $type => $themes) {
+			
             $build = array('js'=>'','css'=>'');
-            foreach($themes as $tname => $theme) {
+            // loop themes 
+			foreach($themes as $tname => $theme) {
+				
                 // get path for current theme
                 $current = str_replace(basename($theme['path']),'',$theme['path']);
         
-                // get js scripts
-                // if overide is set
+				// if overide is set
                 if(isset($theme['info']['overide']) AND trim($theme['info']['overide']) != '') {
                     $path = $current.$theme['overide']['js'];
                     if(true === $debugmode)
                         $path = $current.$theme['info']['overide']['js_working'];   
                 }else{
+					// get js scripts
                     $path = $current.'_/js';
                     if(true === $debugmode)
                         $path = $current.'_/components/js';
                 }
+				// loop through folders to get files
                 $js = self::recurse_get_files($path,'.js');
+				// if jquery ui is required by theme then get from main repo
+				if(isset($theme['info']['jqueryui']))
+					$js[] = $theme['info']['jqueryui'];
+					// shift jquery to the front of the line
 				array_unshift($js,$jquery);
 		
                 // get stylsheets
                 $path = $current.'_/css';
                 $css = self::recurse_get_files($path,'.css');
-		
+				if(isset($theme['info']['jqueryui-css'])) {
+					foreach($theme['info']['jqueryui-css'] as $ui) {
+						$css[] = $ui;
+					}
+				}
 		
     
     // IF DEBUGMODE
@@ -232,14 +245,11 @@ class Cache
                     // gather and build scripts
                     $build['js'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($js as $j) {
-                        //$build['js'] .= '<script src="'.str_replace(getcwd().'/','',$j).'?c='.$now.'"></script>'."\n";
 						$build['js'] .= '<script src="'.WEBROOT.'/cms/scripts/js/'.str_replace(getcwd().'/','',$j).'"></script>'."\n";
-						
                     }
                     // gather and build css
                     $build['css'] .= "<!-- ".$theme['info']['name']."-->\n";
                     foreach($css as $c) {
-                        //$build['css'] .= '<link rel="stylesheet" href="'.str_replace(getcwd().'/','',$c).'?c='.$now.'"/>'."\n";
 						$build['css'] .= '<link rel="stylesheet" href="'.WEBROOT.'/cms/scripts/css/'.str_replace(getcwd().'/','',$c).'"/>'."\n";
                     }
     /* ELSE */  }else{
@@ -261,7 +271,7 @@ class Cache
                     if(false !== @file_put_contents($current.$spath,$scr)) {
 						if(defined('VERBOSE'))print General::message('notice',array('notice','verbose','added'),array(__METHOD__.'->'.__LINE__,$current.$spath));
 					}
-                    $build['js'] = '<script src="_/js/script.js'.'?c='.$now.'"></script>'."\n";
+                    $build['js'] = '<script src="'.WEBROOT.'/cms/scripts/js/_/js/script.js'.'"></script>'."\n";
                     // gather ,minify, then build css
                     $scr = '';
                     foreach($css as $c) {
@@ -281,13 +291,20 @@ class Cache
                     if(false !== @file_put_contents($current.$spath,$scr)) {
 			if(defined('VERBOSE'))print General::message('notice',array('notice','verbose','added'),array(__METHOD__.'->'.__LINE__,$current.$spath));
 		    }
-                    $build['css'] = '<link rel="stylesheet" href="_/css/style.css'.'?c='.$now.'"/>'."\n";
+                    $build['css'] = '<link rel="stylesheet" href="'.WEBROOT.'/cms/scripts/css/_/css/style.css'.'?c='.$now.'"/>'."\n";
                 }
                 // render theme HTML file files
                 $html = self::recurse_get_files($current,'.html.php');
-                foreach($html as $path) {
-                    $rendered = addslashes($this->renderPhpToString($path,array('build'=>$build)));
-                    if(false === $debugmode) {
+				
+                foreach($html as $name => $path) {
+                    // render the template into a static HTML with bstwig 
+					$rendered = addslashes($this->renderPhpToString($path,array('build'=>$build)));
+					// if this is the install theme then the root /cms will always be the running location
+					// so the script and css paths can be static
+					if($name == 'install')$rendered = str_replace(WEBROOT.'/cms/scripts/css/',WEBROOT.'/cms/',$rendered);
+					if($name == 'install')$rendered = str_replace(WEBROOT.'/cms/scripts/js/',WEBROOT.'/cms/',$rendered);
+                    // if debugmode is false then compress
+					if(false === $debugmode) {
                         $rendered = $this->compress($rendered);
                     }
                     $return[$type][$tname][basename($path)] = $rendered;

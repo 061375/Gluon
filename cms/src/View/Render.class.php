@@ -31,4 +31,18 @@ class Render
         header($mime);
         die($s);
     }
+    /**
+     * renders as JSON with MIME-TYPE header
+     * @param string $s
+     * @return void
+     * */
+    public static function ajax($r) {
+        header('application/json');
+        $result = array(
+                'success' => 1,
+                'message' => $r
+        );
+        echo json_encode($result);
+        die();
+    }
 }

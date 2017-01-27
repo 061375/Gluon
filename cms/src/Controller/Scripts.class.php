@@ -20,8 +20,13 @@ class scripts {
             if($k < 2)continue;
             $p .= '/'.$s;
         }
-        $p = file_get_contents(ROOT.$p);
-        Render::_script($p,'text/javascript');
+        $p = @file_get_contents(ROOT.$p);
+        if(false === $p){
+            $m = "HTTP/1.0 404 Not Found";
+        }else{
+            $m = 'text/javascript';
+        }
+        Render::_script($p,$m);
     }
     /**
      * @param array
@@ -34,7 +39,12 @@ class scripts {
             if($k < 2)continue;
             $p .= '/'.$s;
         }
-        $p = file_get_contents(ROOT.$p);
-        Render::_script($p,'text/css');
+        $p = @file_get_contents(ROOT.$p);
+        if(false === $p){
+            $m = "HTTP/1.0 404 Not Found";
+        }else{
+            $m = 'text/css';
+        }
+        Render::_script($p,$m);
     }
 }

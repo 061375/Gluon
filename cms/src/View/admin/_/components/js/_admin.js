@@ -11,12 +11,16 @@ var Admin = (function() {
     
     var button = $('.button');
     
+    var sort = $('.body');
+    
     /**
      *
      *
      * */
     var bindActions = function() {
         button.on('click', show_nav);
+        sort.sortable();
+        sort.disableSelection();
     };
     /**
      *
