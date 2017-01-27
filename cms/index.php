@@ -1,14 +1,14 @@
 <?php
-
-include_once('vendor/autoload.php');
-include_once('src/core.php');
-
 /**
  * @todo this should be in an init file
  * */
 $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 defined('CURRENT_URL') or define('CURRENT_URL',$url);
 define('ROOT',getcwd());
+
+include_once('vendor/autoload.php');
+include_once('src/core.php');
+
 
 /**
  * @todo this should be in the core

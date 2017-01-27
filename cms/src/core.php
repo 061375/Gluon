@@ -96,7 +96,7 @@ class Core {
              *  @todo if no page found this should pass to a 404 page
              *  */
             die('METHOD DOES NOT EXIST');
-        }
+        } // ./method_exists
     }
     /**
      * @return void
@@ -130,7 +130,7 @@ class Core {
         }else{
             \Gluon\Libraries\ErrorHandler::set_error_handler('method does not exist');
             \Gluon\Libraries\ErrorHandler::display_errors();
-        }   
+        }  // ./method_exists 
     }
     /**
      *  @todo this could be added to a class with a remap type operation
@@ -148,9 +148,32 @@ class Core {
         $error = new \Gluon\Libraries\ErrorHandler;
         $cache = new \Gluon\Libraries\Cache($error);
         
+        // if ajax call from setup form
         $ajax = isset($_POST['method']) ? $_POST['method'] : false;
-        
-        if(false === $ajax) {
+        if(false === $ajax) { // ifajax
+            
+            // we need to edit the .htaccess file (if possible to meet the requirements of the local folder)
+            $htaccess = @file_get_contents('.htaccess');
+            if(false === $htaccess) {
+                // error
+                die("There was an error opening the .htaccess file in the cms folder");
+            }else{
+                $out = '';
+                $lines = explode("\n",$htaccess);
+                foreach($lines as $line) {
+                    if(strpos($line,'index.php?q=$1 [L]') !== false) {
+                        $out .= 'RewriteRule ^(.*)$ '.$_SERVER['REQUEST_URI']."index.php?q=$1 [L]\n";
+                    }else{
+                        $out .= $line."\n";
+                    }
+                }
+    
+                if(false === @file_put_contents('.htaccess',$out)){
+                    echo("There was an error editing the .htaccess file in the cms folder.<br />");
+                    echo("Please update the file with these settings:<br />");
+                    die("<pre>".$out."</pre>");
+                }
+            }// ./ edit .htaccess
             
             // clear the cache
             define('GLUON_RUN_INSTALL',true);
@@ -160,16 +183,19 @@ class Core {
             include('cache/classes.yml.php');
             foreach($return as $class) {
                 require_once($class);
-            }
+            } // ./autoload
             
             $install_template = \Gluon\Libraries\Cache::get_cache_byfile('admintheme.admin.yml.php',array('install.html.php'));
             \Gluon\View\Render::_echo($install_template,array('page.title'=>'Welcome to Gluon!'));
         }else{
+            
+            
             // autoload
             include('cache/classes.yml.php');
             foreach($return as $class) {
                 require_once($class);
-            }
+            }// ./autoload
+            
             switch($_POST['method'])
             {
                 case 'install_database':
@@ -284,6 +310,6 @@ class Core {
             echo json_encode(array('success' => 1,'message'=>'Success!'));
             die();
             
-        }
+        } // ./ ifajax
     }
 }

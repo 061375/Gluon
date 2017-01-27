@@ -1,6 +1,14 @@
 <html>
     <head>
         <?php include('head.php'); ?>
+        <style>
+            @font-face {
+            font-family: 'gluon';
+            src: url('<?php echo CURRENT_URL; ?>_/fonts/Gluon.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        </style>
     </head>
     <body class="admin">
         <div class="container">
@@ -20,7 +28,7 @@
             </nav>
             <header>
                 <div class="left">
-                    <img src="/cms/_/svg/logo.svg" class="logo" />
+                    <img src="<?php echo CURRENT_URL; ?>_/svg/logo.svg" class="logo" />
                     Gluon Content Management System
                 </div>
                 <div class="right">
@@ -176,7 +184,12 @@
                     <div class="button aside">
                         <div class=""></div>   
                     </div>
-                </div>   
+                </div>
+                <div class="menu_header">
+                    <div class="button">
+                        <div class="dwn_arrow"></div>   
+                    </div>
+                </div>
             </aside>
             <footer>
                 Copyright &copy; 2017 All Rights Reserved 

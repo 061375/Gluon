@@ -126,6 +126,7 @@ body {
             padding: 5px;
             box-sizing: border-box;
             overflow-y: auto;
+            background: #fff;
             &.activity {
                 height: 45vh;
                 width: 45vw;
@@ -137,7 +138,6 @@ body {
                     margin: 2px 0;
                     &.title {
                         width: 65%;
-                        overflow-x: hidden;
                     }
                     &.status {
                         width: 15%;

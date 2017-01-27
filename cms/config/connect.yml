@@ -1,6 +1,6 @@
 connect:
-    host: sdfgdfg
+    host: ''
     protocol: ftp
     port: ''
-    username: dgfdgfdsfg
-    password: dfgdfgdfg
+    username: ''
+    password: ''

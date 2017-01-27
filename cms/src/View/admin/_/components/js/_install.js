@@ -20,6 +20,8 @@ var Install = (function() {
     
     var run_install = $('.run-install'); 
     
+    var ftpskip = $('.ftpskip');
+    
     var id, i, $last;
     
     var install_er = false;
@@ -120,7 +122,7 @@ var Install = (function() {
         //./init
         
         $('input').each(function(){
-            if($(this).hasClass('required') && $(this).val() == ''){
+            if($(this).hasClass('required') &! $(this).hasClass('skip') && $(this).val() == ''){
                 err = true;
                 $(this).prev().css('display','block');
             }else{
@@ -206,6 +208,11 @@ var Install = (function() {
         next_step.on('click', next);
         prev_step.on('click', prev);
         run_install.on('click', runinstall);
+        ftpskip.on('change', function(){
+            $('.step.three').find('input').each(function(){
+                $(this).toggleClass('skip');            
+            });
+        });
     };
     /**
     * initialize

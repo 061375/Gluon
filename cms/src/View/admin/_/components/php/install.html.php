@@ -5,7 +5,7 @@
     <body class="install">
         <div class="container">
             <div class="box">
-                <img src="_/svg/logo.svg" class="logo" />
+                <img src="<?php echo CURRENT_URL; ?>_/svg/logo.svg" class="logo" />
                 <div class="step stepone">
                     <h1>
                         Welcome!
@@ -70,7 +70,7 @@
                     <div class="hidden required">* required</div>
                     <input type="password" data-name="ftppassword" class="required" placeholder="PASSWORD" />
                     <br />
-                    <input type="checkbox" data-name="ftpskip" class="fltleft"/> <div class="ftpskip">Do not install FTP at this time</div>
+                    <input type="checkbox" data-name="ftpskip" class="fltleft ftpskip"/> <div class="ftpskip">Do not install FTP at this time</div>
                     <br />
                     <button class="prev-step"><-- Prev Step</button>
                     <button class="run-install">Install</button>
