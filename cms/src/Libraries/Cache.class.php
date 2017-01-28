@@ -331,7 +331,7 @@ class Cache
      * */
     public static function get_cache_byfile($file,$key = false)
     {
-        include('cache/'.$file);
+        @include('cache/'.$file);
         if(false !== $key)return General::recurse_array_get($return,$key);
         return $return;
     }

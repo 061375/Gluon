@@ -3,7 +3,9 @@
  * @todo this should be in an init file
  * */
 $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$url = str_replace(substr($url,strpos($url,'/cms')+5,strlen($url)),'',$url);
 defined('CURRENT_URL') or define('CURRENT_URL',$url);
+
 define('ROOT',getcwd());
 
 include_once('vendor/autoload.php');

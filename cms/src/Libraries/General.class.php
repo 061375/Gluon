@@ -241,12 +241,12 @@ class General
      * */
     public static function message($level,$keys,$sprint)
     {
-	$return = 'Gluon '.ucfirst($level).': ';
-	$return .= \Gluon\Libraries\Cache::get_cache_byfile('messages.yml.php',$keys);
-	foreach($sprint as $k => $v) {
-		$return = str_replace('[#'.$k.'#]',$v,$return);
-	}
-	return $return."\n";
+		$return = 'Gluon '.ucfirst($level).': ';
+		$return .= \Gluon\Libraries\Cache::get_cache_byfile('messages.yml.php',$keys);
+		foreach($sprint as $k => $v) {
+			$return = str_replace('[#'.$k.'#]',$v,$return);
+		}
+		return $return."\n";
     }
     /**
      * recurse_array_get

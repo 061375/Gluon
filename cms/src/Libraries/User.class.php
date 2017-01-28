@@ -1,7 +1,7 @@
 <?php
 namespace Gluon\Libraries;
 use \Gluon\Libraries\Encrypt;
-use \Gluon\Model\User;
+use \Gluon\Model\User_mdl;
 /**
  *  
  *  User

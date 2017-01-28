@@ -9,7 +9,7 @@ namespace Gluon\Model;
  *  @copyright © 2017 
  *
  * */
-class User
+class User_mdl
 {
     public static function create_session()
     {

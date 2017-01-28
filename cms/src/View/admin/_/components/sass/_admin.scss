@@ -14,26 +14,18 @@ body {
             height: 20px;
             margin: 0;
             padding: 5px;
+            .right {
+                padding-right: 15px;
+            }
         }
-        .button > div.arrow {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 10px 0 10px 17.3px;
-            border-color: transparent transparent transparent #000;
-            top: 5px;
-            left: 8px;
-        }
-        .button > div {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 10px 17.3px 10px 0;
-            border-color: transparent #000 transparent transparent;
-            top: 5px;
-            left: 5px;
+        .button {
+            position: relative;
+            cursor: pointer;
+            border: solid 1px #000;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            padding: 10px;
         }
         .logo {
             width: 15px;
@@ -46,7 +38,7 @@ body {
         }
         nav {
                 left: 0;
-                width: 120px;
+                width: 130px;
                 height: 95vh;
                 background: #fff;
                 position: absolute;
@@ -55,20 +47,10 @@ body {
                 transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
                 z-index: 999;
             &.hide {
-                left: -80px;   
+                left: -90px;   
             }
             .menu_header {
                 padding: 3px;
-            }
-            .button {
-                position: relative;
-                cursor: pointer;
-                border: solid 1px #000;
-                border-radius: 50%;
-                width: 10px;
-                height: 10px;
-                padding: 10px;
-                float: right;
             }
             ul {
                 list-style: none;
@@ -92,9 +74,9 @@ body {
             }
         }
         aside {
-            width: 250px;
+            min-width: 250px;
             width: 25vw;
-            height: 95vh;
+            height: 100%;
             background: #fff;
             position: absolute;
             right: 0px;
@@ -103,16 +85,6 @@ body {
             z-index: 999;
             .menu_header {
                 padding: 3px;
-            }
-            .button {
-                position: relative;
-                cursor: pointer;
-                border: solid 1px #000;
-                border-radius: 50%;
-                width: 10px;
-                height: 10px;
-                padding: 10px;
-                float: left;
             }
             &.hide {
                 right: -23vw;
@@ -133,7 +105,7 @@ body {
                 & > div {
                     width: 100%;
                 }
-                 div {
+                div {
                     float: left;
                     margin: 2px 0;
                     &.title {
@@ -161,12 +133,48 @@ body {
                 cursor: move;
             }
         }
+        .media {
+            @include easeOut;
+            height: 0px;
+            overflow: hidden;
+            form {
+                margin: 10px 10px 10px 40px;
+                border-radius: 5px;
+                border:  dashed 3px;
+                height: 150px;
+                background: #f0f0f0;
+                p {
+                    margin: 70px auto;
+                    text-align: center;
+                }
+            }
+            &.hide {
+                height: 170px;
+                
+            }
+        }
+        .mediac {
+            padding: 2%;
+            height: 100%;
+            .image {
+                width: 33%;
+                padding-top:33%;
+                margin: 7%;
+                float: left;
+                background: #f0f0f0;
+                border-radius: 3px;
+                border: dashed 2px #000;
+            }
+        }
         footer {
-            position: absolute;
+            position: fixed;
             bottom: 0;
             background: #fff;
             padding: 3px;
             font-size: 10px;
+            text-align: center;
+            width: 100vw;
+            box-shadow: 0px 0px 10px;
         }
     }
 }

@@ -14,16 +14,17 @@
         <div class="container">
             <nav class="hide">
                 <div class="menu_header">
-                    <div class="button nav">
-                        <div class="arrow"></div>
+                    <div class="button nav right">
+                        <div class="lft_arrow"></div>
                     </div>
                 </div>
                 <ul>
-                    <li><a href="admin">Admin <span>A</span></a></li>
-                    <li><a href="updates">Updates <span>B</span></a></li>
+                    <li><a href="admin">Dashboard <span>F</span></a></li>
                     <li><a href="pages">Pages  <span>C</span></a></li>
                     <li><a href="plugins">Plugins  <span>D</span></a></li>
                     <li><a href="themes">Themes  <span>E</span></a></li>
+                    <li><a href="admin">Settings <span>A</span></a></li>
+                    <li><a href="updates">Updates <span>B</span></a></li>
                 </ul>
             </nav>
             <header>
@@ -181,15 +182,34 @@
             </div>
             <aside class="hide">
                 <div class="menu_header">
-                    <div class="button aside">
-                        <div class=""></div>   
+                    <div class="button aside left">
+                        <div class="rgt_arrow"></div>   
                     </div>
                 </div>
+                <div class="media">
+                    <form>
+                        <p>
+                            Drag Image Here
+                        </p>
+                    </form>    
+                </div>
                 <div class="menu_header">
-                    <div class="button">
+                    <div class="button _media right">
                         <div class="dwn_arrow"></div>   
                     </div>
                 </div>
+                <div class="mediac">
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="image"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
             </aside>
             <footer>
                 Copyright &copy; 2017 All Rights Reserved 

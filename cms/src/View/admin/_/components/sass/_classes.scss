@@ -1,17 +1,44 @@
 .hidden {display: none}
 .left {float: left}
 .right {float: right}
-.dwn_arrow {
+.clear {clear: both}
+.lft_arrow {
+    position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 27.7px 16px 0 16px;
+    border-width: 10px 0 10px 17.3px;
+    border-color: transparent transparent transparent #000;
+    top: 5px;
+    left: 8px;
+}
+.rgt_arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 17.3px 10px 0;
+    border-color: transparent #000 transparent transparent;
+    top: 5px;
+    left: 5px;
+}
+.dwn_arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 17.3px 10px 0 10px;
     border-color: #000000 transparent transparent transparent;
+    top: 8px;
+    left: 5px;
 }
 .up_arrow {
+    position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 16px 27.7px 16px;
+    border-width: 0 10px 17.3px 10px;
     border-color: transparent transparent #000000 transparent;
+    top: 5px;
+    left: 5px;
 }
