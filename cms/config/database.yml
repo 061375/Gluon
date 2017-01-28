@@ -1,4 +1,4 @@
-class: pdoDatabase
+class: \Gluon\Libraries\pdoDatabase
 param:
     dsn: 'mysql:host=localhost;dbname=gl_db'
     username: gl_db

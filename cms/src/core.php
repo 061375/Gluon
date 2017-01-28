@@ -47,7 +47,12 @@ use Symfony\Component\Yaml\Yaml;
  *
  * */
 class Core {
+    private $global;
     
+    /**
+     * includes all classes that are stored in cache
+     * @return void
+     * */
     public static function autoload() {
         // autoload
         include('cache/classes.yml.php');
@@ -55,15 +60,11 @@ class Core {
             require_once($class);
         }
     }
+    
     /**
-     * @param mixed $a
-     * @return void
-     * */
-    public static function run($a) {
-        // logic
-        // admin/blah/a/b/c
-        /*
-         * class Admin {
+     *  admin/blah/a/b/c
+     *  
+     *  class Admin {
             function blah($param) {
                 $param[0] = 'a'
                 $param[1] = 'b'
@@ -71,11 +72,25 @@ class Core {
                 ...
                 ...
             }
-           }
-        */
-
+        }
+     * @param mixed $a
+     * @return void
+     * */
+    public function run($a) {
+        // connect to database
+        \Gluon\Core::set('db',\Gluon\Libraries\Database::connect());
+        
+        //$result = \Gluon\Core::get('db')->Query("select * from `users`",array(),array('FetchAssoc'));
+        //echo '<pre>';print_r($result );exit();/*REMOVE ME*/
+        
+        // make sure the user isn't below the admin at least
+        if(!isset($a[0]) OR trim($a[0]) == '') {
+            header('location: '.CURRENT_URL.'admin');
+            die();
+        }
         if(!isset($a[1]) OR trim($a[1]) == '')$a[1] = 'index';
-
+        
+        // if method exists - run it
         if(method_exists("\Gluon\Controller\\".$a[0],$a[1])) {
             $m = "\Gluon\Controller\\".$a[0];
             $m = new $m();
@@ -99,13 +114,9 @@ class Core {
         } // ./method_exists
     }
     /**
-     * @return void
-     * */
-    public static function ajax($a) {
-        // logic
-        // ajax/blah/a/b/c
-        /*
-         * class Admin {
+     *  admin/blah/a/b/c
+     *  
+     *  class Admin {
             function blah($param) {
                 $param[0] = 'a'
                 $param[1] = 'b'
@@ -113,8 +124,11 @@ class Core {
                 ...
                 ...
             }
-           }
-        */
+        }
+     * @param mixed $a
+     * @return void
+     * */
+    public function ajax($a) {
         /**
          * @todo this should check against the login. the URL should contain a hash from the database based on IP
          * */
@@ -132,11 +146,26 @@ class Core {
             \Gluon\Libraries\ErrorHandler::display_errors();
         }  // ./method_exists 
     }
+    
+    
+    /**
+     *
+     * */
+    public function get($key) {
+        return $this->global[$key];   
+    }
+    /**
+     *
+     * */
+    public function set($key,$var) {
+        $this->global[$key] = $var;   
+    }
+    
     /**
      *  @todo this could be added to a class with a remap type operation
      *  @return void
      *  */
-    public static function install()
+    public function install()
     {
         // verbose any errors experienced during an installation
         ini_set('display_errors', 1);

@@ -19,4 +19,10 @@ class admin {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('admin.html.php'));
         Render::_echo($install_template,array('page.title'=>'Welcome to Gluon Admin!'));
     }
+    function login($a) {
+        
+    }
+    function logout($a) {
+        
+    }
 }

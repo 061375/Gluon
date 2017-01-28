@@ -183,13 +183,13 @@ class Encrypt
         return $k;
     }
     /**
-     *
-     *  make_salt
+     *  make salt
      *  @param variant $l length of the string to return
-     *  @return array
-     *  
+     *  @param bool
+     *  @param bool
+     *  @return array 
      * */
-    function make_salt($l = false,$b = false)
+    function make_salt($l = false,$b = false,$set_local = true)
     {
         
         if(false === $l) {
@@ -213,7 +213,8 @@ class Encrypt
             's'=>substr($s,0,$b), // start
             'e'=>substr($s,($b+1),strlen($s)) // end
         );
-        $this->salt = $return;
+	
+        if(true === $set_local)$this->salt = $return;
         
         return $return;
     }
@@ -239,5 +240,13 @@ class Encrypt
     function get_salt()
     {
         return $this->salt;
+    }
+    /**
+     *
+     *
+     * */
+    public static function ps_make_salt($l = false,$b = false)
+    {
+	return self::make_salt($l,$b);
     }
 }

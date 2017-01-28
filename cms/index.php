@@ -8,7 +8,7 @@ define('ROOT',getcwd());
 
 include_once('vendor/autoload.php');
 include_once('src/core.php');
-
+$gluon = new \Gluon\Core();
 
 /**
  * @todo this should be in the core
@@ -17,20 +17,26 @@ include_once('src/core.php');
 $v = json_decode(@file_get_contents('v/.version'));
 
 if(true === $v->installed) {
+    
+    
     \Gluon\Core::autoload();
     $action = \Gluon\Libraries\General::get_variable('q',false,true);
     
     switch($action) {
         case 'ajax':
-            \Gluon\Core::ajax();
+            $gluon->ajax();
             break; 
         default:
             // if action is not set then we will try to extract a page from the URL
-            \Gluon\Core::run($action);
+            $gluon->run($action);
     }
+    
+    
     // the operation should never get here
     die(__LINE__);
-}else{  
+}else{
+    
     // if not installed...then install
-    \Gluon\Core::install();
-}
+    $gluon->install();
+    
+} // ./ifinstalled

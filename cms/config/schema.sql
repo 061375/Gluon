@@ -165,9 +165,11 @@ CREATE TABLE `users` (
   `usernice` varchar(35) NOT NULL,
   `password` text NOT NULL,
   `permissions` tinyint(2) NOT NULL,
+  `ip` varchar(35) NOT NULL,
+  `session` text NOT NULL,
   `date_created` datetime NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
