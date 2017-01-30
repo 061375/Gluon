@@ -19,12 +19,13 @@
                     </div>
                 </div>
                 <ul>
-                    <li><a href="admin">Dashboard <span>F</span></a></li>
-                    <li><a href="pages">Pages  <span>C</span></a></li>
-                    <li><a href="plugins">Plugins  <span>D</span></a></li>
-                    <li><a href="themes">Themes  <span>E</span></a></li>
-                    <li><a href="admin">Settings <span>A</span></a></li>
-                    <li><a href="updates">Updates <span>B</span></a></li>
+                    <li><a href="admin">Dashboard <span title="Dashboard">F</span></a></li>
+                    <li><a href="pages">Pages  <span title="Pages">C</span></a></li>
+                    <li><a href="blog">Blog  <span title="Blog">J</span></a></li>
+                    <li><a href="plugins">Plugins  <span title="Plugins">D</span></a></li>
+                    <li><a href="themes">Themes  <span title="Themes">E</span></a></li>
+                    <li><a href="admin">Settings <span title="Settings">A</span></a></li>
+                    <li><a href="updates">Updates <span title="Updates">B</span></a></li>
                 </ul>
             </nav>
             <header>
@@ -41,138 +42,7 @@
                     <h2>
                         Activity
                     </h2>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            DELETED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
-                        </div>
-                        <div class="status">
-                            UPDATED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
-                        </div>
-                        <div class="status">
-                            UPDATED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
-                        </div>
-                        <div class="status">
-                            UPDATED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.   
-                        </div>
-                        <div class="status">
-                            UPDATED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
-                    <div class="clear">
-                        <div class="title">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. sit amet, consectetur adipiscing elit. 
-                        </div>
-                        <div class="status">
-                            UPLOADED
-                        </div>
-                        <div class="date">
-                            Jan 25, 2017 5:31:23 
-                        </div>
-                    </div>
+                    [# activity.section #]
                 </section>
                 <section class="analytics">
                     <h2>
@@ -194,6 +64,7 @@
                     </form>    
                 </div>
                 <div class="menu_header">
+                    <span title="Media">G</span>
                     <div class="button _media right">
                         <div class="dwn_arrow"></div>   
                     </div>

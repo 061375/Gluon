@@ -57,7 +57,7 @@ class Cache
      * recurse through specified folder search for specified file type
      * @param string $dir
      * @param string $ext
-     * @param mixed $return the first time throughthis array needs to assigned
+     * @param mixed $return the first time through this array needs to assigned
      * @return array
      * */
     public function recurse_get_files($dir,$ext = '.php',$return = false)
