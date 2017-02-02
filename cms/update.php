@@ -24,13 +24,13 @@ if(false === $task)$task = isset($argv[1]) ? trim($argv[1]) : false;
 if(defined('GLUON_RUN_INSTALL'))$task = '-c';
 
 $option = isset($argv[2]) ? $argv[2] : false;
-if('-v' == $option)define('VERBOSE',true);;
+if('-v' == $option)define('VERBOSE',true);
 
 $help =
 '
 [-c] - clear application cache
 [-u] - update to the latest version
-[-p] - set permissions
+[-p] - set permissions [group name] [group name]
 [*] [-v] print processes verbose
 ';
 switch($task)
@@ -39,15 +39,24 @@ switch($task)
         gluon_clear_cache();
         break;
     case '-u':
+        /**
+         * @todo create process for updating the cms
+         * */
         break;
     case '-p':
-        if(false === $option)
-            die("\nplease provide a user to assign to the updatable folders\n");
-        shell_exec('chown -R '.$option.':'.$option.' ../../Gluon');
-        shell_exec('chown -R '.$option.':'.$option.' cache');
-        shell_exec('chown -R '.$option.':'.$option.' v');
-        shell_exec('chown -R '.$option.':'.$option.' config');
-        shell_exec('chown -R '.$option.':'.$option.' ../upload/cache');
+        if (php_sapi_name() !== 'cli')
+            die("\nthis operation can only be performed from the command line\n");
+            
+        $optionb = isset($argv[3]) ? $argv[3] : false;
+        
+        if(false === $option OR false === $optionb)
+            $options = $option.':'.$optionb;
+        
+        shell_exec('chown -R '.$options.' ../../Gluon');
+        shell_exec('chown -R '.$options.' cache');
+        shell_exec('chown -R '.$options.' v');
+        shell_exec('chown -R '.$options.' config');
+        shell_exec('chown -R '.$options.' ../upload/cache');
         //
         shell_exec('chmod -R 755 ../../Gluon');
         shell_exec('chmod -R 777 cache');

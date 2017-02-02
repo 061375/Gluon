@@ -38,17 +38,8 @@
                 </div>
             </header>
             <div class="body">
-                <section class="activity">
-                    <h2>
-                        Activity
-                    </h2>
-                    [# activity.section #]
-                </section>
-                <section class="analytics">
-                    <h2>
-                        Analytics
-                    </h2>  
-                </section>
+                <!-- activity.section.ajax -->
+                <!-- analytics.section.ajax -->
             </div>
             <aside class="hide">
                 <div class="menu_header">

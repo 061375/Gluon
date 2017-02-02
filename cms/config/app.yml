@@ -3,7 +3,7 @@
 src_alt:
 # if specified when cache is cleard this path with be taken into account
 # this is generally for when the project is not the base like http://localhost/folder/Gluon/cms
-webroot: 
+webroot: /Gluon
 error_handler: ErrorHandler
 jquery: _/components/jquery/jquery-3.1.1.min.js
 # if true then:
