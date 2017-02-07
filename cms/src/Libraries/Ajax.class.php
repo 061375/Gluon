@@ -1,6 +1,5 @@
 <?php
 namespace Gluon\Libraries;
-use \Gluon\Core;
 /**
  *  
  *  Ajax
@@ -8,6 +7,8 @@ use \Gluon\Core;
  *  @copyright © 2017 to present 
  *
  * */
+use \Gluon\Core;
+use \Gluon\Libraries\User;
 class Ajax extends Core {
     
     /**
@@ -23,7 +24,7 @@ class Ajax extends Core {
            return false;
         }
         // get hash from db
-        
+        $s = User::get_session();
         // compare based on IP
         
         // if permissions check against

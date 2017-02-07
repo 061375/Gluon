@@ -16,9 +16,35 @@ class User
      * gets a session in the database
      * return string
      * */
+    public static function check_credentials($username,$password)
+    {
+        $mdl = new User_mdl();
+        $e = new Encrypt();
+        $password = $e->encrypt($password);
+        $result = $mdl->get_username($username);
+        $result = isset($result[0]) ? $result[0] : false;
+        $password = $e->decrypt($password);
+        $result['password'] = $e->decrypt($result['password']);
+        if($result['username'] != $username) {
+            // set error
+            return false;
+        }
+        if($result['password'] != $password) {
+            // set error
+            return false;
+        }
+        unset($result['password']);
+        return $result;
+    }
+    
+    
+    /**
+     * gets a session in the database
+     * return string
+     * */
     public static function get_session()
     {
-        $ip = $this->getip();
+        $ip = self::getip();
         if(false === $ip)return false;
         $mdl = new User_mdl();
         return $mdl->get_session($ip);
@@ -28,13 +54,17 @@ class User
      * @param string $u username 
      * return string
      * */
-    public function update_session($u)
+    public function update_session($u,$new = false)
     {
-        $ip = $this->getip();
+        $ip = self::getip();
         if(false === $ip)return false;
-        $s = md5(strtotime('now').Encrypt::ps_make_salt(16));
         $mdl = new User_mdl();
-        return $mdl->update_session($u,$ip,$s);
+        if(true === $new) {
+            $s = md5(strtotime('now').Encrypt::ps_make_salt(16));
+            return $mdl->create_session($u,$ip,$s);
+        }else{
+            return $mdl->update_session($u,$ip);
+        }
     }
     /**
      * destroys a session in the database
@@ -42,7 +72,7 @@ class User
      * */
     public function destroys_session($s)
     {
-        $ip = $this->getip();
+        $ip = self::getip();
         if(false === $ip)return false;
         $mdl = new User_mdl();
         return $mdl->destroys_session($ip,$s);
@@ -51,10 +81,10 @@ class User
      * destroys old sessions in the database
      * return string
      * */
-    public function destroyold_sessions($datetime = false)
+    public static function destroyold_sessions($datetime = false)
     {
         if(false === $datetime) {
-            $datetime = General::is_set($this->app['session_timeout']);
+            $datetime = General::recurse_array_get($GLOBALS,array('app','session_timeout'));
                 if(false === $datetime)
                     $datetime = date('Y-m-d H:i:s',strtotime('-10 minutes'));
         }
@@ -69,7 +99,7 @@ class User
      * gets the users ip if it is set
      * @return $ip
      * */
-    private function getip()
+    public static function getip()
     {
         $ip = General::is_set($_SERVER,'REMOTE_ADDR');
         if(false === $ip) {

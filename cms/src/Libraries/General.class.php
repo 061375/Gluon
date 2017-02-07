@@ -149,7 +149,7 @@ class General
         // init session if false
 		if (session_id() === '' && headers_sent() == false)session_start();
 		
-		
+		//echo '<pre>';print_r($_SESSION );exit();/*REMOVE ME*/
 		if(is_array($key) == false){
 			return isset($_SESSION[$key]) ? $_SESSION[$key] : $else;
 		}else{

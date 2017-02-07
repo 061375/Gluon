@@ -21,12 +21,11 @@ var Ajax = (function() {
     * */
     var getData = function(method,data,url){
         if (typeof url === 'undefined') {
-            url = ajaxurl;
+            url = ajaxurl+'/'+method;
         }
         $.logThis('send ajax '+url);
         var post = {
-            method :method,
-            data:data,
+            data    :data
         };
         return $.ajax({
             url         :url,

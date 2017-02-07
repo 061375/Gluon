@@ -3,6 +3,8 @@ namespace Gluon\Controller;
 use Gluon\Libraries\Cache;
 use Gluon\Libraries\Ajax;
 use Gluon\Libraries\User;
+use Gluon\Libraries\General;
+use Gluon\Libraries\Encrypt;
 use Gluon\View\Render;
 /**
  *  
@@ -27,8 +29,18 @@ class admin {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('admin.html.php'));
         Render::_echo($install_template,array('page.title'=>'Welcome to Gluon Admin!'));
     }
-    function login($a) {
-        
+    function login() {
+        $s = User::get_session();
+        $username = General::post_variable('username',false);
+        $password = General::post_variable('password',false);
+        $credentials = User::check_credentials($username,$password);
+        if(false !== $credentials) {
+            General::set_session('user',$credentials);
+            header('location: '.CURRENT_URL.'admin');
+            die();
+        }
+        $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('login.html.php'));
+        Render::_echo($install_template,array('page.title'=>'Login - Gluon'));
     }
     function logout($a) {
         

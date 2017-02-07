@@ -49,13 +49,12 @@ use Symfony\Component\Yaml\Yaml;
 class Core {
     
     
-    private $global;
+    public $global;
     
     public $classes;
     
     public $messages;
     
-    public $app;
     
     function __construct() {
         // initilize the base classes
@@ -66,7 +65,7 @@ class Core {
         $this->classes['error'] = new \Gluon\Libraries\ErrorHandler;
         $this->classes['cache'] = new \Gluon\Libraries\Cache($this->classes['error']);
         $this->messages = $this->classes['cache']->get_cache_byfile('messages.yml.php');
-        $this->app = $this->classes['cache']->get_cache_byfile('app.yml.php');
+        $GLOBALS['app'] = $this->classes['cache']->get_cache_byfile('app.yml.php');
     }
     /**
      * includes all classes that are stored in cache
@@ -97,7 +96,7 @@ class Core {
      * */
     public function run($a) {
         // connect to database
-        \Gluon\Core::set('db',\Gluon\Libraries\Database::connect());
+        $GLOBALS['db'] = \Gluon\Libraries\Database::connect();
         
         // make sure the user isn't below the admin at least
         if(!isset($a[0]) OR trim($a[0]) == '') {
@@ -105,10 +104,23 @@ class Core {
             die();
         }
         
-        
+        // destroy any old sessions
+        \Gluon\Libraries\User::destroyold_sessions();
+
         // permissions
-        
+        $s = \Gluon\Libraries\User::get_session();
+
         // if fail set $a[1] == 'login'
+        if(false !== $s) {
+            if(true === $this->classes['error']->has_error()) 
+                $this->classes['error']->display_errors(true);
+            if(count($s) < 1) {
+                $a[1] = 'login';
+            }else{
+                if($s[0]['username'] != \Gluon\Libraries\General::get_session(array('user','username'),false))
+                    $a[1] = 'login';
+            }
+        }
         
         if(!isset($a[1]) OR trim($a[1]) == '')$a[1] = 'index';
         
@@ -173,6 +185,15 @@ class Core {
     }
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      *
      * */
@@ -233,7 +254,7 @@ class Core {
                         $out .= $line."\n";
                     }
                 }
-    
+                if(strpos($out,$htaccess) === false)
                 if(false === @file_put_contents('.htaccess',$out)){
                     echo("There was an error editing the .htaccess file in the cms folder.<br />");
                     echo("Please update the file with these settings:<br />");

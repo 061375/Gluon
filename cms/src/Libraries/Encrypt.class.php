@@ -153,6 +153,8 @@ class Encrypt
         
         $k = '';
         
+		$ll = 0;
+		
         for($l = 0; $l < strlen($p); $l++) {
             $k.=substr($p,$l,1);
             $x++;

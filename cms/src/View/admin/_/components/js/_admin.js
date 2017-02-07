@@ -15,7 +15,7 @@ var Admin = (function() {
     
     /**
      *
-     *
+     * 
      * */
     var bindActions = function() {
         button.on('click', show_nav);

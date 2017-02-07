@@ -45,7 +45,7 @@
 
 // initialize global variables
 
-var ajaxpath = '/';
+var ajaxpath = 'ajax';
  
 var show_log = true;
 
