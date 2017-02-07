@@ -23,10 +23,9 @@ if(true === $v->installed) {
     
     \Gluon\Core::autoload();
     $action = \Gluon\Libraries\General::get_variable('q',false,true);
-    
-    switch($action) {
+    switch((isset($action[0]) ? $action[0] : '')) {
         case 'ajax':
-            $gluon->ajax();
+            $gluon->ajax($action);
             break; 
         default:
             // if action is not set then we will try to extract a page from the URL

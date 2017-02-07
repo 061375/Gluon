@@ -97,6 +97,7 @@ function gluon_clear_cache() {
         $messages_cpath = 'cache/messages.yml.php';
         
         // init classes
+        require_once('src/core.php');
         require_once('src/Libraries/Cache.class.php');
         require_once('src/Libraries/ErrorHandler.class.php');
         require_once('src/Libraries/General.class.php');

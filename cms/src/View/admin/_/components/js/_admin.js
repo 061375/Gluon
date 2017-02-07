@@ -24,6 +24,14 @@ var Admin = (function() {
     };
     /**
      *
+     *
+     **/
+    var initPage = function() {
+        var $a = $('.admin');
+        if ($a.hasClass('dashboard'))dashboard();
+    }
+    /**
+     *
      * */
     var show_nav = function() {
         if($(this).hasClass('nav'))$(this).closest('nav').toggleClass('hide');
@@ -55,8 +63,15 @@ var Admin = (function() {
     /**
      *
      * */
+    var dashboard = function() {
+        console.log('Dashboard'); 
+    }
+    /**
+     *
+     * */
     var init = function() {
-        bindActions();   
+        bindActions();
+        initPage();
     };
 
     return {

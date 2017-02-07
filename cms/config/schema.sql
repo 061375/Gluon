@@ -282,3 +282,37 @@ ALTER TABLE `urls`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+--
+-- Table structure for table `session`
+--
+
+CREATE TABLE `session` (
+  `id` int(11) NOT NULL,
+  `session` varchar(35) NOT NULL,
+  `ip` varchar(35) NOT NULL,
+  `misc` text NOT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ip` (`ip`),
+  ADD KEY `session` (`session`,`ip`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `session`
+--
+ALTER TABLE `session`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

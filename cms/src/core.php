@@ -47,8 +47,27 @@ use Symfony\Component\Yaml\Yaml;
  *
  * */
 class Core {
+    
+    
     private $global;
     
+    public $classes;
+    
+    public $messages;
+    
+    public $app;
+    
+    function __construct() {
+        // initilize the base classes
+        require_once('src/Libraries/General.class.php');
+        require_once('src/Libraries/ErrorHandler.class.php');
+        require_once('src/Libraries/Cache.class.php');
+        // init classes
+        $this->classes['error'] = new \Gluon\Libraries\ErrorHandler;
+        $this->classes['cache'] = new \Gluon\Libraries\Cache($this->classes['error']);
+        $this->messages = $this->classes['cache']->get_cache_byfile('messages.yml.php');
+        $this->app = $this->classes['cache']->get_cache_byfile('app.yml.php');
+    }
     /**
      * includes all classes that are stored in cache
      * @return void
@@ -80,14 +99,17 @@ class Core {
         // connect to database
         \Gluon\Core::set('db',\Gluon\Libraries\Database::connect());
         
-        //$result = \Gluon\Core::get('db')->Query("select * from `users`",array(),array('FetchAssoc'));
-        //echo '<pre>';print_r($result );exit();/*REMOVE ME*/
-        
         // make sure the user isn't below the admin at least
         if(!isset($a[0]) OR trim($a[0]) == '') {
             header('location: '.CURRENT_URL.'admin');
             die();
         }
+        
+        
+        // permissions
+        
+        // if fail set $a[1] == 'login'
+        
         if(!isset($a[1]) OR trim($a[1]) == '')$a[1] = 'index';
         
         // if method exists - run it
@@ -95,8 +117,8 @@ class Core {
             $m = "\Gluon\Controller\\".$a[0];
             $m = new $m();
             $m->$a[1]($a);
-            if(true === \Gluon\Libraries\ErrorHandler::has_errors()) {
-                \Gluon\Libraries\ErrorHandler::display_errors(true);
+            if(true === $this->classes['error']->has_error()) {
+                $this->classes['error']->display_errors(true);
             }
         }else{
             /**
@@ -129,21 +151,24 @@ class Core {
      * @return void
      * */
     public function ajax($a) {
+        
+        define('ISAJAX',true);
+        
         /**
          * @todo this should check against the login. the URL should contain a hash from the database based on IP
          * */
-        if(method_exists("\Gluon\Controller\\".$a[0],$a[1])) {
-            $m = "\Gluon\Controller\\".$a[0];
+        if(method_exists("\Gluon\Controller\\".$a[1],$a[2])) {
+            $m = "\Gluon\Controller\\".$a[1];
             $m = new $m();
-            $result = $m->$a[1]($a);
-            if(true === \Gluon\Libraries\ErrorHandler::has_errors()) {
-                \Gluon\Libraries\ErrorHandler::display_errors();
+            $result = $m->$a[2]();
+            if(true === $this->classes['error']->has_error()) {
+                $this->classes['error']->display_errors();
             }else{
                 \Gluon\View\Render::ajax($result);
             }
         }else{
-            \Gluon\Libraries\ErrorHandler::set_error_handler('method does not exist');
-            \Gluon\Libraries\ErrorHandler::display_errors();
+            $this->classes['error']->set_error_message('method does not exist');
+            $this->classes['error']->display_errors();
         }  // ./method_exists 
     }
     
@@ -160,6 +185,18 @@ class Core {
     public function set($key,$var) {
         $this->global[$key] = $var;   
     }
+    /*
+     *
+     * */
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      *  @todo this could be added to a class with a remap type operation

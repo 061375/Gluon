@@ -15,3 +15,7 @@ error:
         movefile: "Failed to move file"
         upload: "File failed to upload"
         malicious: "File contains potential malicious content"
+    ajax:
+        isajax: "This operation can only be called via ajax"
+    session:
+        noip: "cannot set session"

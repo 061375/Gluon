@@ -5,6 +5,7 @@ src_alt:
 # this is generally for when the project is not the base like http://localhost/folder/Gluon/cms
 webroot: /Gluon
 error_handler: ErrorHandler
+session_timeout: '-10 minutes'
 jquery: _/components/jquery/jquery-3.1.1.min.js
 # if true then:
 # infomration about include paths and other info will be rendered
