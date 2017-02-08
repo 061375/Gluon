@@ -19,7 +19,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 --
 -- Table structure for table `admin`
 --
-DROP `admin`;
+DROP TABLE  `admin`;
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `title` text NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
 --
 -- Table structure for table `cms_options`
 --
-DROP `cms_options`;
+DROP TABLE  `cms_options`;
 CREATE TABLE `cms_options` (
   `id` int(11) NOT NULL,
   `option_name` varchar(35) NOT NULL,
@@ -60,7 +60,7 @@ INSERT INTO `cms_options` (`id`, `option_name`, `option_value`, `date_modified`)
 --
 -- Table structure for table `keywords`
 --
-DROP `keywords`;
+DROP TABLE  `keywords`;
 CREATE TABLE `keywords` (
   `id` int(11) NOT NULL,
   `word` varchar(35) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `keywords` (
 --
 -- Table structure for table `media`
 --
-DROP `media`;
+DROP TABLE  `media`;
 CREATE TABLE `media` (
   `id` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `media` (
 --
 -- Table structure for table `permissions`
 --
-DROP `permissions`;
+DROP TABLE  `permissions`;
 CREATE TABLE `permissions` (
   `id` tinyint(2) NOT NULL,
   `title` varchar(35) NOT NULL,
@@ -114,7 +114,7 @@ INSERT INTO `permissions` (`id`, `title`, `date_modified`) VALUES
 --
 -- Table structure for table `posts`
 --
-DROP `posts`;
+DROP TABLE  `posts`;
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `title` text NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `upload_log`
 --
-DROP `upload_log`;
+DROP TABLE  `upload_log`;
 CREATE TABLE `upload_log` (
   `id` int(11) NOT NULL,
   `log` text NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE `upload_log` (
 --
 -- Table structure for table `urls`
 --
-DROP `urls`;
+DROP TABLE  `urls`;
 CREATE TABLE `urls` (
   `id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE `urls` (
 --
 -- Table structure for table `users`
 --
-DROP `users`;
+DROP TABLE  `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(35) NOT NULL,
@@ -288,7 +288,7 @@ ALTER TABLE `users`
 -- Table structure for table `session`
 --
 
-DROP `session`;
+DROP TABLE  `session`;
 CREATE TABLE `session` (
   `id` int(11) NOT NULL,
   `session` varchar(35) NOT NULL,

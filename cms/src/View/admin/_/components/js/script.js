@@ -62,7 +62,7 @@ var show_log = true;
 
 // initialize all the classes
 $(document).ready(function(){
-  Ajax.init();
+  Ajax.init(ajaxpath);
   if (typeof $('body.install').html() !== 'undefined') {
         Install.init();
   }

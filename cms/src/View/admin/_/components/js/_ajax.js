@@ -25,6 +25,7 @@ var Ajax = (function() {
         }
         $.logThis('send ajax '+url);
         var post = {
+            method  :method,
             data    :data
         };
         return $.ajax({

@@ -23,6 +23,10 @@ class User
         $password = $e->encrypt($password);
         $result = $mdl->get_username($username);
         $result = isset($result[0]) ? $result[0] : false;
+        if(false === $result) {
+            // set error
+            return false;
+        }
         $password = $e->decrypt($password);
         $result['password'] = $e->decrypt($result['password']);
         if($result['username'] != $username) {
@@ -34,6 +38,7 @@ class User
             return false;
         }
         unset($result['password']);
+    
         return $result;
     }
     

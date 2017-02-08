@@ -35,6 +35,7 @@ class admin {
         $password = General::post_variable('password',false);
         $credentials = User::check_credentials($username,$password);
         if(false !== $credentials) {
+            User::update_session($username,true);
             General::set_session('user',$credentials);
             header('location: '.CURRENT_URL.'admin');
             die();

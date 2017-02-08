@@ -247,8 +247,8 @@ class Encrypt
      *
      *
      * */
-    public static function ps_make_salt($l = false,$b = false)
+    public static function ps_make_salt($l = false,$b = false,$sl = false)
     {
-	return self::make_salt($l,$b);
+		return self::make_salt($l,$b,$sl);
     }
 }

@@ -188,7 +188,7 @@ var Install = (function() {
         var d = document.createElement('div');
             $(d).html(message);
         $('.install-pro').append(d);
-        var p = Ajax.getData(method,data);
+        var p = Ajax.getData(method,data,'');
         // result
         Ajax.dataResult(p,function(data) {
             var d = document.createElement('div');

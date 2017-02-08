@@ -89,7 +89,7 @@ class pdoDatabase
 	 * */
 	public function FetchAssoc($q)
 	{
-	    return $q->fetchAll();
+	    return $q->fetchAll(\PDO::FETCH_ASSOC);
 	}
 	/**
 	 * fetches number of rows return by previous query

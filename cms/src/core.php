@@ -109,7 +109,7 @@ class Core {
 
         // permissions
         $s = \Gluon\Libraries\User::get_session();
-
+        //echo '<pre>';print_r( $s);exit();/*REMOVE ME*/
         // if fail set $a[1] == 'login'
         if(false !== $s) {
             if(true === $this->classes['error']->has_error()) 
@@ -121,7 +121,7 @@ class Core {
                     $a[1] = 'login';
             }
         }
-        
+
         if(!isset($a[1]) OR trim($a[1]) == '')$a[1] = 'index';
         
         // if method exists - run it
@@ -361,6 +361,7 @@ class Core {
                         // set error
                         // die
                     }
+                    //echo '<pre>';print_r( $data);exit();/*REMOVE ME*/
                     $enc = new \Gluon\Libraries\Encrypt();
                     $conn = \Gluon\Libraries\General::get_session('database');
                     $conn = array('mysql:host='.$conn['data']['dbhost'].';dbname='.$conn['data']['dbname'],
@@ -369,17 +370,20 @@ class Core {
                     $db = new \Gluon\Libraries\pdoDatabase(new \Gluon\Libraries\ErrorHandler(),array(),false,0);
                     $db->connect($conn);
                     $sql = "INSERT INTO `users`
-                        (`username`,`usernice`,`password`,`permissions`,`date_created`)
+                        (`username`,`usernice`,`password`,`permissions`,`ip`,`session`,`date_created`)
                     VALUES
-                        (:username,:usernice,:password,:permissions,:date_created)";
+                        (:username,:usernice,:password,:permissions,:ip,:session,:date_created)";
                     $pass = $enc->encrypt($data['password'],true,true);
                     $db->Query($sql,array(
                         'username'    =>$data['username'],
-                        'usernice'    =>'',
+                        'usernice'    =>$data['friendlyname'],
                         'password'    =>$pass,
                         'permissions' =>1,
+                        'ip'          =>'',
+                        'session'     =>'',
                         'date_created'=>date('Y-m-d H:i:s',strtotime('now'))
                     ));
+                    unset($_SESSION['database']);
                     break;
                 case 'finalize':
                     // clear the cache
