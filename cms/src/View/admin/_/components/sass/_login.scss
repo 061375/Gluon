@@ -1,0 +1,41 @@
+.login {
+    .container {
+        transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
+        width: 100vw;
+        max-width: 320px;
+        position: relative;
+        margin: 20vh auto;
+        perspective: 1000px;
+        opacity: 1;
+        &.fadeout {
+            max-width: 90vw;
+            opacity: 0;
+            .box {
+                height: 320px;
+            }
+            img {
+                height: 320px;
+                width: 320px;
+            }
+        }
+    }
+    .box {
+        transition: all .6s cubic-bezier(0.23, 1, 0.32, 1);
+        width: 100%;
+        position: absolute;
+        box-sizing: border-box;
+        animation: flyin .5s normal forwards ease-in-out;
+        padding: 10px;
+        text-align: center;
+        border: solid 1px #d8d8d8;
+        border-radius: 5px;
+        transform: rotateX(30deg);
+    }
+    .label {
+        margin: 10px;
+    }
+    footer {
+        position: absolute;
+        bottom: 0;
+    }
+}

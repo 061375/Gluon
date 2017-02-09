@@ -122,11 +122,3 @@
         }
     }
 }
-@include keyframes(flyin) {
-    from {top: 0px;opacity: 0;box-shadow: 0px 1px 5px #7d7d7d;}
-    to {top: -50px;opacity: 1;box-shadow: 0px 100px 100px #7d7d7d;}
-}
-@include keyframes(spinup) {
-    0%{transform:rotate(0deg)}
-    100%{transform:rotate(360deg)}
-}

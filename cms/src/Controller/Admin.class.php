@@ -24,7 +24,7 @@ class admin {
      * @param array
      * @return void
      * */
-    function index($a)
+    function index()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('admin.html.php'));
         Render::_echo($install_template,array('page.title'=>'Welcome to Gluon Admin!'));
@@ -39,39 +39,42 @@ class admin {
             General::set_session('user',$credentials);
             header('location: '.CURRENT_URL.'admin');
             die();
+        }else{
+            if(false !== $username OR false !== $password) 
+            $error = "User Name or Password Incorrect";
         }
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('login.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Login - Gluon'));
+        Render::_echo($install_template,array('page.title'=>'Login - Gluon','page.error'=>$error));
     }
-    function logout($a) {
+    function logout() {
         
     }
-    function pages($a)
+    function pages()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('pages.html.php'));
         Render::_echo($install_template,array('page.title'=>'Pages - Gluon'));
     }
-    function blog($a)
+    function blog()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('blog.html.php'));
         Render::_echo($install_template,array('page.title'=>'Blog - Gluon'));
     }
-    function plugins($a)
+    function plugins()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('plugins.html.php'));
         Render::_echo($install_template,array('page.title'=>'Plugins - Gluon'));
     }
-    function themes($a)
+    function themes()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('themes.html.php'));
         Render::_echo($install_template,array('page.title'=>'Themes - Gluon'));
     }
-    function settings($a)
+    function settings()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('settings.html.php'));
         Render::_echo($install_template,array('page.title'=>'Settings - Gluon'));
     }
-    function updates($a)
+    function updates()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('updates.html.php'));
         Render::_echo($install_template,array('page.title'=>'Updates - Gluon'));

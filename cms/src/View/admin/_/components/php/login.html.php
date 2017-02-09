@@ -2,25 +2,21 @@
     <head>
         <?php include('head.php'); ?>
     </head>
-    <body class="admin login">
+    <body class="login">
         <div class="container">
-            <div class="body">
+            <div class="box">
                 <form action="<?php echo CURRENT_URL; ?>/admin/login" method="post">
-                    <div class="message hidden"></div>
-                    <div>
-                        <label for="username">
-                            User Name
-                            <input type="text" name="username" />
-                        </label>
-                        <label for="username">
-                            Password
-                            <input type="password" name="password" />
-                        </label>
-                        <input type="submit" value="Login" />
+                    <div class="message">[#page.error#]</div>
+                    <div class="label">
+                        <input type="text" name="username" placeholder="User Name" />
                     </div>
+                    <div class="label">
+                        <input type="password" name="password" placeholder="Password" />
+                    </div>
+                    <input type="submit" value="Login" />
                 </form>
             </div>
-            <?php include('footer.php'); ?>
         </div>
+        <?php include('footer.php'); ?>
     </body>
 </html>
