@@ -109,7 +109,7 @@ class Core {
 
         // permissions
         $s = \Gluon\Libraries\User::get_session();
-        //echo '<pre>';print_r( $s);exit();/*REMOVE ME*/
+
         // if fail set $a[1] == 'login'
         if(false !== $s) {
             if(true === $this->classes['error']->has_error()) 
@@ -144,6 +144,7 @@ class Core {
             /**
              *  @todo if no page found this should pass to a 404 page
              *  */
+            header('HTTP/1.0 404 Not Found');
             die('METHOD DOES NOT EXIST');
         } // ./method_exists
     }

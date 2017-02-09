@@ -17,6 +17,23 @@ body {
             .right {
                 padding-right: 15px;
             }
+            .welcome {
+                a {
+                    text-decoration: none;
+                }
+                .logout {
+                    @include easeOut;
+                    float: left;
+                    padding-right: 0px;
+                    opacity: 0;
+                }
+                &:hover {
+                    .logout {
+                        opacity: 1;
+                        padding-right: 20px;
+                    }
+                }
+            }
         }
         .button {
             position: relative;

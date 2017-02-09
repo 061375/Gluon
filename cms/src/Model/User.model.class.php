@@ -88,6 +88,23 @@ class User_mdl extends Core
         return General::is_set($result,'FetchAssoc');    
         
     }
+    /**
+     * destroy session
+     * @param string $u
+     * @param string $ip
+     * @return boo
+     * */
+    function destroy_session($u,$ip)
+    {
+        $sql = "UPDATE `users` SET `session` = ''
+                WHERE `username` = :username OR `ip` = :ip";
+        $result = $this->db->Query($sql,array(
+            'username'=>$u,
+            'ip'=>$ip
+        ),array('RowsAffected'));
+        if($result['RowsAffected'] < 1)return true;
+        return false; 
+    }
     function destroyold_sessions()
     {
         return true;

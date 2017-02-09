@@ -17,7 +17,13 @@ class admin {
     
     private $ajax;
     
+    private $vars = array();
+    
     function __construct() {
+        $user = General::get_session('user');
+        foreach($user as $k => $v) {
+            $this->vars['page.'.$k] = $v;
+        }
         $this->ajax = new Ajax();    
     }
     /**
@@ -27,7 +33,8 @@ class admin {
     function index()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('admin.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Welcome to Gluon Admin!'));
+        $this->vars['page.title'] = 'Admin - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function login() {
         $s = User::get_session();
@@ -44,40 +51,52 @@ class admin {
             $error = "User Name or Password Incorrect";
         }
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('login.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Login - Gluon','page.error'=>$error));
+        $this->vars['page.title'] = 'Login - Gluon';
+        $this->vars['page.error'] = $error;
+        Render::_echo($install_template,$this->vars);
     }
     function logout() {
-        
+        $s = User::get_session();
+        General::set_session('user',array());
+        if(!isset($s[0]['username']))$this->login();
+        User::destroy_session($s[0]['username']);
+        $this->login();
     }
     function pages()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('pages.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Pages - Gluon'));
+        $this->vars['page.title'] = 'Pages - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function blog()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('blog.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Blog - Gluon'));
+        $this->vars['page.title'] = 'Blog - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function plugins()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('plugins.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Plugins - Gluon'));
+        $this->vars['page.title'] = 'Plugins - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function themes()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('themes.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Themes - Gluon'));
+        $this->vars['page.title'] = 'Themes - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function settings()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('settings.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Settings - Gluon'));
+        $this->vars['page.title'] = 'Settings - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     function updates()
     {
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('updates.html.php'));
-        Render::_echo($install_template,array('page.title'=>'Updates - Gluon'));
+        $this->vars['page.title'] = 'Updates - Gluon';
+        Render::_echo($install_template,$this->vars);
     }
     
     

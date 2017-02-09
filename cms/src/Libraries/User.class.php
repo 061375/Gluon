@@ -75,12 +75,12 @@ class User
      * destroys a session in the database
      * return string
      * */
-    public function destroys_session($s)
+    public function destroy_session($u)
     {
         $ip = self::getip();
         if(false === $ip)return false;
         $mdl = new User_mdl();
-        return $mdl->destroys_session($ip,$s);
+        return $mdl->destroy_session($u,$ip);
     }
     /**
      * destroys old sessions in the database

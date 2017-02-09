@@ -154,7 +154,7 @@ var Install = (function() {
                                 // redirect to admin
                                 if (!install_er) {
                                     $('.container').addClass('fadeout');
-                                    window.location = "admin";
+                                    window.location = "admin/login";
                                 }else{
                                     alert('one or more errors occured during the install');
                                 }
