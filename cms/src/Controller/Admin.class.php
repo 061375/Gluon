@@ -98,6 +98,25 @@ class admin {
         $this->vars['page.title'] = 'Updates - Gluon';
         Render::_echo($install_template,$this->vars);
     }
+    function user($a)
+    {
+        $user = (isset($a[2]) ? $a[2] : false);
+        if(false === $user)die('HTTP/1.0 404 Not Found');
+        $user = General::get_session('user');
+        foreach($user as $k => $v) {
+            $this->vars['form.'.$k] = $v;
+        }
+        //echo '<pre>';print_r( $GLOBALS['app']);exit();/*REMOVE ME*/
+        $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('user.html.php'));
+        $this->vars['page.title'] = 'User - Gluon';
+        Render::_echo($install_template,$this->vars);
+    }
+    function users($a)
+    {
+        $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('users.html.php'));
+        $this->vars['page.title'] = 'Users - Gluon';
+        Render::_echo($install_template,$this->vars);
+    }
     
     
     /**

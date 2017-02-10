@@ -168,9 +168,10 @@ CREATE TABLE `users` (
   `permissions` tinyint(2) NOT NULL,
   `ip` varchar(35) NOT NULL,
   `session` text NOT NULL,
+  `extra` text NOT NULL COMMENT 'serialized data containing extra user data',
   `date_created` datetime NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables

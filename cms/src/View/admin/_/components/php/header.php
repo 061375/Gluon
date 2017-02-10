@@ -6,7 +6,7 @@
     <div class="right welcome">
         <a href="admin/user/[#page.username#]">Hello [#page.usernice#]</a>
         <div class="logout">
-            <a href="admin/logout">Logout</a>
+            <a href="<?php echo CURRENT_URL; ?>admin/logout" title="Logout"><span class="gluon">L</span></a>
         </div>
     </div>
 </header>

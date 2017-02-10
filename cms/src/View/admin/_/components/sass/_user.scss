@@ -1,0 +1,22 @@
+&.user {
+    .body {
+        box-sizing:  border-box;
+        width: 30vw;
+        margin: auto;
+        section {
+            width: 100%;
+        }
+        .left {
+            width: 47%;
+        }
+        .right {
+            width: 47%;
+        }
+        .left, .right {
+            margin: 5px;
+            input {
+                width: 100%;
+            }
+        }
+    }
+}

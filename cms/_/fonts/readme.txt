@@ -2,7 +2,7 @@
 font-building tool.
 This font was created by “jeremyh1024”.
 This font has a homepage where this archive and other versions may be found:
-http://fontstruct.com/fontstructions/show/1362308
+https://fontstruct.com/fontstructions/show/1362308
 
 Try Fontstruct at http://fontstruct.com
 It’s easy and it’s fun.

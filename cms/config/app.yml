@@ -16,3 +16,15 @@ debugmode: true
 media:
     upload_folder: upload
     allowed_mimetypes: ['image/gif', 'image/jpeg', 'image/png', 'image/pjpeg','application/pdf']
+# default user fields
+user: 
+    profile:
+        profilepic: true
+        website: true
+        bio: true
+    permissions:
+        superadmin: 1
+        admin: 2
+        editor: 3
+        guest: 4
+    

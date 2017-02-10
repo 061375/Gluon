@@ -73,7 +73,7 @@ Attribution Notice”) comprising of:
 the name of the Font Designer or pseudonym, if applicable (“jeremyh1024”);
 the title of the Font Software (“Gluon”); and
 to the extent reasonably practicable, the URI
-(http://fontstruct.com/fontstructions/show/1362308) from where the Font was
+(https://fontstruct.com/fontstructions/show/1362308) from where the Font was
 originally downloaded.
 
 The Attribution Notice may be implemented in any reasonable manner. For the
