@@ -73,14 +73,14 @@ class User_mdl extends Core
         return General::is_set($result,'FetchAssoc');    
     }
     /**
-     * get credentials
+     * get user
      * @param string $username
      * @param string $password
      * @return array
      * */
-    function get_username($username)
+    function get_user($username)
     {
-        $sql = "SELECT `username`,`usernice`,`permissions`,`password`,`date_created` FROM `users`
+        $sql = "SELECT `username`,`usernice`,`permissions`,`password`,`extra`,`date_created` FROM `users`
                 WHERE `username` = :username";
         $result = $this->db->Query($sql,array(
             'username'=>$username

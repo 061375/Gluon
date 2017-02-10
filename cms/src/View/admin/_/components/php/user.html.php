@@ -24,6 +24,10 @@
                             <input type="text" name="password2" placeholder="confirm" />
                         </div>
                     </div>
+                    <div class="clear"></div>
+                    [#form.profile#]
+                    <div class="clear"></div>
+                    [#form.permissions#]
                 </section>
             </div>
             <?php include('media.php'); ?>

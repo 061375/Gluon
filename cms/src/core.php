@@ -371,9 +371,9 @@ class Core {
                     $db = new \Gluon\Libraries\pdoDatabase(new \Gluon\Libraries\ErrorHandler(),array(),false,0);
                     $db->connect($conn);
                     $sql = "INSERT INTO `users`
-                        (`username`,`usernice`,`password`,`permissions`,`ip`,`session`,`date_created`)
+                        (`username`,`usernice`,`password`,`permissions`,`ip`,`session`,`extra`,`date_created`)
                     VALUES
-                        (:username,:usernice,:password,:permissions,:ip,:session,:date_created)";
+                        (:username,:usernice,:password,:permissions,:ip,:session,:extra,:date_created)";
                     $pass = $enc->encrypt($data['password'],true,true);
                     $db->Query($sql,array(
                         'username'    =>$data['username'],
@@ -382,6 +382,7 @@ class Core {
                         'permissions' =>1,
                         'ip'          =>'',
                         'session'     =>'',
+                        'extra'       =>'',
                         'date_created'=>date('Y-m-d H:i:s',strtotime('now'))
                     ));
                     unset($_SESSION['database']);

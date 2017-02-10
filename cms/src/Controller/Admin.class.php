@@ -102,11 +102,35 @@ class admin {
     {
         $user = (isset($a[2]) ? $a[2] : false);
         if(false === $user)die('HTTP/1.0 404 Not Found');
-        $user = General::get_session('user');
+        //$user = General::get_session('user');
+        $user = User::get_user($user);
         foreach($user as $k => $v) {
+            if($k == 'password')continue;
+            if($k == 'extra'){$extra = unserialize($v);continue;}
             $this->vars['form.'.$k] = $v;
         }
-        //echo '<pre>';print_r( $GLOBALS['app']);exit();/*REMOVE ME*/
+        
+        $this->vars['form.profile'] = '';
+        if(isset($GLOBALS['app']['user']['profile'])) {
+            foreach($GLOBALS['app']['user']['profile'] as $k => $v) {
+                if(true == $v) {
+                    if(isset($extra['profile'][$k])) {
+                        $vv = $v;
+                    }else{
+                        $vv = '';
+                    }
+                    $this->vars['form.profile'] .= '<div><div class="left">'.$k.'</div><div class="right"><input type="text" name="'.$k.'" value="'.$vv.'" /></div><div class="clear"></div>';   
+                }
+            }
+        }
+        $this->vars['form.permissions'] = '';
+        if(isset($GLOBALS['app']['user']['permissions'])) {
+            $this->vars['form.permissions'] .= '<div><div class="left">Permissions</div><div class="right"><select name="permissions">';
+            foreach($GLOBALS['app']['user']['permissions'] as $k => $v) {
+                $this->vars['form.permissions'] .= '<option value="'.$v.'">'.$k.'</option>';
+            }
+            $this->vars['form.permissions'] .= '</select></div>';
+        }
         $install_template = Cache::get_cache_byfile('admintheme.admin.yml.php',array('user.html.php'));
         $this->vars['page.title'] = 'User - Gluon';
         Render::_echo($install_template,$this->vars);

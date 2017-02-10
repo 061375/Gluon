@@ -21,7 +21,7 @@ class User
         $mdl = new User_mdl();
         $e = new Encrypt();
         $password = $e->encrypt($password);
-        $result = $mdl->get_username($username);
+        $result = $mdl->get_user($username);
         $result = isset($result[0]) ? $result[0] : false;
         if(false === $result) {
             // set error
@@ -43,6 +43,16 @@ class User
     }
     
     
+    /**
+     * gets a session in the database
+     * return string
+     * */
+    public static function get_user($username)
+    {
+        $mdl = new User_mdl();
+        $return = $mdl->get_user($username);
+        return isset($return[0]) ? $return[0] : false;
+    }
     /**
      * gets a session in the database
      * return string

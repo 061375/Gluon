@@ -358,8 +358,22 @@ class Cache extends Core
         return true;
 	}
     // ---------------------------------- Private Functions
-    
-    
+	
+    /*
+	 * @todo a block system might be useful
+	 * 
+    private function build_blocks($app)
+	{
+		$html = self::recurse_get_files($current,'.block.php');
+		foreach($html as $name => $path) {
+			$file = file_get_contents($path);
+			$blocks = explode('[[#',$file);
+			
+		}
+	}
+	*/
+	
+
     /**
      * recursively build a cache array
      * @param array $array
